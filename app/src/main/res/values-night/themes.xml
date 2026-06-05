@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.EDetective" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowActionBar">false</item>
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="android:colorAccent">#7ECBB8</item>
+        <item name="android:navigationBarColor">#0D1412</item>
+        <item name="android:statusBarColor">#0D1412</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+
+    <style name="Theme.EDetective.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#0D1412</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_food_detective_mark</item>
+        <item name="postSplashScreenTheme">@style/Theme.EDetective</item>
+    </style>
+
+</resources>
