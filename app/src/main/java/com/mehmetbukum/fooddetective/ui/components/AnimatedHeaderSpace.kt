@@ -188,11 +188,11 @@ private fun buildComets() = listOf(
 )
 
 private fun buildStems() = listOf(
-    BotanicalStem(0.73f, 0.93f, 0.46f, -0.15f, 0.08f, 19f, 1.02f, 0.52f),
-    BotanicalStem(0.82f, 1.00f, 0.62f, 0.04f, 0.22f, 24f, 1.18f, 0.68f),
-    BotanicalStem(0.90f, 0.96f, 0.50f, 0.16f, 0.39f, 17f, 0.96f, 0.50f),
-    BotanicalStem(0.97f, 1.05f, 0.72f, -0.08f, 0.56f, 21f, 1.25f, 0.60f),
-    BotanicalStem(0.67f, 1.03f, 0.35f, -0.22f, 0.74f, 13f, 0.84f, 0.42f)
+    BotanicalStem(0.73f, 0.98f, 0.46f, -0.15f, 0.08f, 19f, 1.02f, 0.52f),
+    BotanicalStem(0.82f, 1.05f, 0.62f, 0.04f, 0.22f, 24f, 1.18f, 0.68f),
+    BotanicalStem(0.90f, 1.01f, 0.50f, 0.16f, 0.39f, 17f, 0.96f, 0.50f),
+    BotanicalStem(0.97f, 1.10f, 0.72f, -0.08f, 0.56f, 21f, 1.25f, 0.60f),
+    BotanicalStem(0.67f, 1.08f, 0.35f, -0.22f, 0.74f, 13f, 0.84f, 0.42f)
 )
 
 private fun buildPollen() = listOf(
