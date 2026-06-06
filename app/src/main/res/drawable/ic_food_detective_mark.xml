@@ -4,56 +4,47 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Dark badge -->
+    <!-- Deep green badge -->
     <path
         android:fillColor="#123C35"
-        android:pathData="M54,54m-42,0a42,42 0,1 0,84 0a42,42 0,1 0,-84 0" />
+        android:pathData="M54,54m-43,0a43,43 0,1 0,86 0a43,43 0,1 0,-86 0" />
 
-    <!-- Soft inner card -->
+    <!-- Warm outer glow -->
     <path
-        android:fillColor="#F9F1DF"
-        android:pathData="M31,28h36c5,0 9,4 9,9v34c0,5 -4,9 -9,9H31c-5,0 -9,-4 -9,-9V37c0,-5 4,-9 9,-9z" />
+        android:fillColor="#F5EBD6"
+        android:fillAlpha="0.18"
+        android:pathData="M54,54m-36,0a36,36 0,1 0,72 0a36,36 0,1 0,-72 0" />
 
-    <!-- Inspector hat brim -->
+    <!-- Product label card -->
     <path
-        android:fillColor="#C9973A"
-        android:pathData="M30,29c5,-8 14,-13 24,-13s19,5 24,13H30z" />
+        android:fillColor="#FFF8E9"
+        android:pathData="M27,24h43c5,0 9,4 9,9v44c0,5 -4,9 -9,9H27c-5,0 -9,-4 -9,-9V33c0,-5 4,-9 9,-9z" />
 
-    <!-- Inspector hat crown -->
+    <!-- Folded label corner -->
     <path
-        android:fillColor="#E2B75E"
-        android:pathData="M39,23c3,-6 8,-9 15,-9s12,3 15,9l2,6H37z" />
+        android:fillColor="#E9D7B6"
+        android:pathData="M67,24l12,12H69c-1,0 -2,-1 -2,-2V24z" />
 
-    <!-- Hat band -->
-    <path
-        android:fillColor="#123C35"
-        android:pathData="M36,27h36v5H36z" />
-
-    <!-- Barcode / food label lines -->
-    <path
-        android:strokeColor="#1F5B4F"
-        android:strokeWidth="2"
-        android:strokeLineCap="round"
-        android:fillColor="#00000000"
-        android:pathData="M33,43h16M33,50h11M33,57h18M33,64h13" />
-
-    <!-- Apple / food clue body -->
+    <!-- Label header strip -->
     <path
         android:fillColor="#D45F43"
-        android:pathData="M59,49c3,-3 8,-3 11,1c3,4 2,12 -2,18c-2,3 -5,4 -8,2c-3,2 -6,1 -8,-2c-4,-6 -5,-14 -2,-18c3,-4 7,-4 9,-1z" />
+        android:pathData="M27,34h33v7H27z" />
 
-    <!-- Apple leaf -->
+    <!-- Food/additive label lines -->
     <path
-        android:fillColor="#4D8B57"
-        android:pathData="M62,44c3,-5 8,-6 12,-4c-2,5 -7,7 -12,4z" />
-
-    <!-- Apple stem -->
-    <path
-        android:strokeColor="#6B4A2B"
-        android:strokeWidth="2"
+        android:strokeColor="#1F5B4F"
+        android:strokeWidth="2.4"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
-        android:pathData="M60,49c1,-4 2,-6 4,-8" />
+        android:pathData="M28,50h24M28,58h18M28,66h25M28,74h14" />
+
+    <!-- Barcode clue -->
+    <path
+        android:strokeColor="#123C35"
+        android:strokeWidth="2"
+        android:strokeLineCap="square"
+        android:fillColor="#00000000"
+        android:pathData="M57,50v18M62,50v12M67,50v18M72,50v10M77,50v18" />
 
     <!-- Magnifying glass lens -->
     <path
@@ -61,15 +52,15 @@
         android:strokeWidth="6"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
-        android:pathData="M58,56m-15,0a15,15 0,1 0,30 0a15,15 0,1 0,-30 0" />
+        android:pathData="M59,61m-18,0a18,18 0,1 0,36 0a18,18 0,1 0,-36 0" />
 
-    <!-- Magnifying glass highlight -->
+    <!-- Lens shine -->
     <path
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="2"
+        android:strokeWidth="2.4"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
-        android:pathData="M48,49c3,-4 8,-6 13,-4" />
+        android:pathData="M48,52c4,-4 10,-6 16,-4" />
 
     <!-- Magnifying glass handle -->
     <path
@@ -77,15 +68,15 @@
         android:strokeWidth="7"
         android:strokeLineCap="round"
         android:fillColor="#00000000"
-        android:pathData="M69,68L84,83" />
+        android:pathData="M72,74L88,90" />
 
     <!-- Handle cap -->
     <path
         android:fillColor="#E2B75E"
-        android:pathData="M85,84m-5,0a5,5 0,1 0,10 0a5,5 0,1 0,-10 0" />
+        android:pathData="M89,91m-5,0a5,5 0,1 0,10 0a5,5 0,1 0,-10 0" />
 
-    <!-- Small E-number hint -->
+    <!-- Small E-number/additive hint -->
     <path
         android:fillColor="#123C35"
-        android:pathData="M35,70h13v4h-8v3h7v4h-7v3h8v4H35z" />
+        android:pathData="M45,74h14v4h-9v3h8v4h-8v3h9v4H45z" />
 </vector>
