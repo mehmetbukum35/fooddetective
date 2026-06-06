@@ -325,7 +325,7 @@ fun FoodDetectiveContent(
             InfoCard(
                 title = stringResource(R.string.sync_info_title),
                 message = message.asString(),
-                modifier = Modifier.padding(horizontal = 20.dp)
+                modifier = Modifier.padding(start = 20.dp, top = 16.dp, end = 20.dp)
             )
         }
     }
