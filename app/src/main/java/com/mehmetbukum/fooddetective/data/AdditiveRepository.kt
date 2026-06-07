@@ -170,6 +170,8 @@ class AdditiveRepository(
 
         // 3) Paketlerde E-kodu yerine yazılan katkı adlarını yakala:
         // name_tr, name_en, aliases_tr, aliases_en alanları OCR metni içinde aranır.
+        // Koruyucu/renklendirici gibi genel işlev sınıfı kelimeleri özellikle yok sayılır;
+        // aksi halde "Koruyucu atmosferde ambalajlanmıştır" gibi etiket cümleleri yanlış katkı döndürür.
         val nameMatches = findNameMatches(rawText)
         nameMatches.forEach { additive ->
             if (results.none { it.code == additive.code }) results.add(additive)
@@ -195,6 +197,7 @@ class AdditiveRepository(
                 additive.searchTerms()
                     .map(::normalizeForNameMatch)
                     .filter { term -> term.length >= MIN_NAME_MATCH_LENGTH }
+                    .filterNot(::isGenericNameMatchTerm)
                     .any { term -> containsWholeTerm(normalizedOcrText, term) }
             }
             .distinctBy { it.code }
@@ -245,8 +248,46 @@ class AdditiveRepository(
         return pattern.containsMatchIn(text)
     }
 
+    private fun isGenericNameMatchTerm(term: String): Boolean {
+        return term in GENERIC_NAME_MATCH_TERMS
+    }
+
     companion object {
         private const val MIN_NAME_MATCH_LENGTH = 4
+        private val GENERIC_NAME_MATCH_TERMS = setOf(
+            "koruyucu",
+            "preservative",
+            "renklendirici",
+            "colorant",
+            "colour",
+            "colouring",
+            "coloring",
+            "tatlandirici",
+            "sweetener",
+            "antioksidan",
+            "antioxidant",
+            "emulgator",
+            "emulsifier",
+            "stabilizor",
+            "stabilizer",
+            "stabiliser",
+            "tasiyici",
+            "carrier",
+            "asitlik duzenleyici",
+            "acidity regulator",
+            "topaklanmayi onleyici",
+            "anti caking agent",
+            "kivam artirici",
+            "thickener",
+            "jellestirici",
+            "gelling agent",
+            "parlatici",
+            "glazing agent",
+            "ambalajlama gazi",
+            "packaging gas",
+            "itici gaz",
+            "propellant"
+        )
     }
 }
 
