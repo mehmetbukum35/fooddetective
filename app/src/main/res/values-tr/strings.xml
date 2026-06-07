@@ -83,6 +83,8 @@
     <string name="label_purpose">AMAÇ</string>
     <string name="label_health_note">SAĞLIK NOTU</string>
     <string name="label_risk">RİSK</string>
+    <string name="risk_info_title">Risk seviyesi nasıl yorumlanır?</string>
+    <string name="risk_info_body">Sinyal çubukları; katkı maddesinin sağlık notu, uyarı metni, kaynak hassasiyeti ve veritabanındaki genel sınıflandırmasına göre pratik bir özet sunar. Bu bilgi genel rehberlik içindir; nihai karar için ürün etiketi ve uzman görüşü dikkate alınmalıdır.</string>
     <string name="summary_template">%1$s, genellikle %2$s olarak kullanılan bir katkı maddesidir. Helal durumu %3$s, risk seviyesi %4$s olarak işaretlenmiştir.</string>
     <string name="summary_default_purpose">katkı maddesi</string>
     <string name="summary_unknown_halal">bilinmiyor</string>
