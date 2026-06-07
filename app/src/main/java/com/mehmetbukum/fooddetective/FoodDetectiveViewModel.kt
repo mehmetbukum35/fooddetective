@@ -57,6 +57,19 @@ class FoodDetectiveViewModel(
         _uiState.update { it.copy(apiConnectionStatus = status) }
     }
 
+    fun refreshSyncMessageTime(lastSuccessfulSyncText: String?) {
+        if (lastSuccessfulSyncText.isNullOrBlank()) return
+
+        _uiState.update { state ->
+            val currentMessage = state.syncMessage
+            if (currentMessage is UiText.Resource && currentMessage.resId in SYNC_MESSAGES_WITH_TIME) {
+                state.copy(syncMessage = currentMessage.copy(args = listOf(lastSuccessfulSyncText)))
+            } else {
+                state
+            }
+        }
+    }
+
     fun runScheduledApiSync(
         shouldCheckSync: Boolean,
         lastSuccessfulVersionHash: String?,
@@ -334,5 +347,10 @@ class FoodDetectiveViewModel(
 
     companion object {
         private const val TAG = "EDetectiveSync"
+        private val SYNC_MESSAGES_WITH_TIME = setOf(
+            R.string.sync_success_updated_at,
+            R.string.sync_success_checked_at,
+            R.string.sync_local_last_updated_at
+        )
     }
 }
