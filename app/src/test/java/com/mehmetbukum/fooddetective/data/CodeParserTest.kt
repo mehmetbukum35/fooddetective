@@ -41,6 +41,13 @@ class CodeParserTest {
     }
 
     @Test
+    fun extractCodes_readsParenthesizedSubCodesFromOcrText() {
+        val result = CodeParser.extractCodes("Renklendirici: E160b(i), E160b(ii)")
+
+        assertEquals(listOf("E160B(I)", "E160B(II)"), result)
+    }
+
+    @Test
     fun extractCodes_removesDuplicateCodesButKeepsFirstSeenOrder() {
         val result = CodeParser.extractCodes("E330, e330, E160A, E 160A, E120")
 
@@ -48,24 +55,38 @@ class CodeParserTest {
     }
 
     @Test
-    fun extractCodes_convertsSuspectCReadingToECode() {
+    fun extractCodes_doesNotConvertSuspectCReadingToECode() {
         val result = CodeParser.extractCodes("Renklendirici: C160")
 
-        assertEquals(listOf("E160"), result)
+        assertEquals(emptyList<String>(), result)
     }
 
     @Test
-    fun extractCodes_convertsSuspectFReadingToECode() {
+    fun extractCodes_doesNotConvertSuspectFReadingToECode() {
         val result = CodeParser.extractCodes("İçindekiler: F330")
 
-        assertEquals(listOf("E330"), result)
+        assertEquals(emptyList<String>(), result)
     }
 
     @Test
-    fun extractCodes_convertsSuspectCurrencyReadingToECode() {
-        val result = CodeParser.extractCodes("Koruyucu: €211")
+    fun extractCodes_doesNotConvertSuspectCurrencyReadingToECode() {
+        val result = CodeParser.extractCodes("Koruyucu: €211 veya £211")
 
-        assertEquals(listOf("E211"), result)
+        assertEquals(emptyList<String>(), result)
+    }
+
+    @Test
+    fun extractCodes_ignoresBareNumbersFromNutritionAndDates() {
+        val result = CodeParser.extractCodes("Enerji 2265/541, protein 37.5, tuz 5.9, parti PN 284")
+
+        assertEquals(emptyList<String>(), result)
+    }
+
+    @Test
+    fun extractCodes_ignoresOutOfRangeECodes() {
+        val result = CodeParser.extractCodes("Enerji E2265/541 ve E99")
+
+        assertEquals(emptyList<String>(), result)
     }
 
     @Test
