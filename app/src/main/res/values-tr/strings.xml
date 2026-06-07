@@ -125,6 +125,7 @@
     <string name="camera_permission_denied_message">Kamera izni verilmedi. Etiketi taramak için izni açabilir veya Galeri seçeneğiyle fotoğraf seçebilirsiniz.</string>
     <string name="button_allow_permission">İzin Ver</string>
     <string name="camera_screen_title">Etiketi Tara</string>
+    <string name="camera_overlay_instruction">İçindekiler yazısını bu çerçeveye hizalayın</string>
     <string name="button_close">Kapat</string>
     <string name="a11y_gallery_button">Galeriden etiket fotoğrafı seç</string>
     <string name="a11y_capture_button">Etiket fotoğrafı çek</string>
