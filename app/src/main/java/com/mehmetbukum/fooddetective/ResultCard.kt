@@ -102,7 +102,8 @@ fun ResultCard(additive: Additive, modifier: Modifier = Modifier) {
                 riskLevel = riskLevel,
                 riskLabel = riskLabel,
                 riskColor = riskColor,
-                isDarkTheme = isDarkTheme
+                isDarkTheme = isDarkTheme,
+                isEnglish = isEnglish
             )
 
             HorizontalDivider(
@@ -139,7 +140,8 @@ private fun ResultHeroHeader(
     riskLevel: RiskLevel,
     riskLabel: String,
     riskColor: Color,
-    isDarkTheme: Boolean
+    isDarkTheme: Boolean,
+    isEnglish: Boolean
 ) {
     var showRiskInfo by remember { mutableStateOf(false) }
     val heroBackground = if (isDarkTheme) {
@@ -149,7 +151,10 @@ private fun ResultHeroHeader(
     }
 
     if (showRiskInfo) {
-        RiskInfoDialog(onDismiss = { showRiskInfo = false })
+        RiskInfoDialog(
+            isEnglish = isEnglish,
+            onDismiss = { showRiskInfo = false }
+        )
     }
 
     Card(
@@ -228,24 +233,35 @@ private fun ResultHeroHeader(
 }
 
 @Composable
-private fun RiskInfoDialog(onDismiss: () -> Unit) {
+private fun RiskInfoDialog(
+    isEnglish: Boolean,
+    onDismiss: () -> Unit
+) {
+    val title = if (isEnglish) "How is the risk level estimated?" else stringResource(R.string.risk_info_title)
+    val body = if (isEnglish) {
+        "The risk bars summarize the available database notes for this additive. They are only a quick guide. Please also check the product label and reliable sources when needed."
+    } else {
+        stringResource(R.string.risk_info_body)
+    }
+    val closeText = if (isEnglish) "Got it" else stringResource(R.string.about_dialog_close)
+
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = stringResource(R.string.risk_info_title),
+                text = title,
                 fontWeight = FontWeight.Black
             )
         },
         text = {
             Text(
-                text = stringResource(R.string.risk_info_body),
+                text = body,
                 lineHeight = 21.sp
             )
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.about_dialog_close))
+                Text(closeText)
             }
         }
     )
