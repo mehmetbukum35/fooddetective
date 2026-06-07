@@ -84,7 +84,7 @@
     <string name="label_health_note">HEALTH NOTE</string>
     <string name="label_risk">RISK</string>
     <string name="risk_info_title">How is the risk level estimated?</string>
-    <string name="risk_info_body">The signal bars summarize the additive's general health note, warning text, source sensitivity, and available database classification. It is a practical guide only; it is not medical advice, certification, or a final legal decision. Always check the product label and qualified guidance when needed.</string>
+    <string name="risk_info_body">The signal bars summarize the general health note, warning text, source sensitivity, and available database classification for this additive. It is a practical guide only; it is not medical advice, certification, or a final legal decision. Always check the product label and qualified guidance when needed.</string>
     <string name="summary_template">%1$s is generally used as %2$s. Its halal status is marked as %3$s and its risk level as %4$s.</string>
     <string name="summary_default_purpose">an additive</string>
     <string name="summary_unknown_halal">unknown</string>
