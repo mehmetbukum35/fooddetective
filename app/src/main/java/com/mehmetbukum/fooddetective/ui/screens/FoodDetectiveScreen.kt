@@ -12,8 +12,10 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -305,8 +307,18 @@ fun FoodDetectiveContent(
         if (!state.isLoading) {
             AnimatedVisibility(
                 visible = state.singleResult != null,
-                enter = fadeIn() + slideInVertically(initialOffsetY = { it / 5 }) + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
+                enter = fadeIn(animationSpec = tween(durationMillis = 360)) +
+                    slideInVertically(
+                        initialOffsetY = { it / 3 },
+                        animationSpec = tween(durationMillis = 360)
+                    ) +
+                    scaleIn(
+                        initialScale = 0.97f,
+                        animationSpec = tween(durationMillis = 360)
+                    ) +
+                    expandVertically(animationSpec = tween(durationMillis = 300)),
+                exit = fadeOut(animationSpec = tween(durationMillis = 180)) +
+                    shrinkVertically(animationSpec = tween(durationMillis = 180))
             ) {
                 state.singleResult?.let { additive ->
                     ResultCard(
@@ -325,8 +337,14 @@ fun FoodDetectiveContent(
 
             AnimatedVisibility(
                 visible = state.ocrResult != null,
-                enter = fadeIn() + slideInVertically(initialOffsetY = { it / 6 }) + expandVertically(),
-                exit = fadeOut() + shrinkVertically()
+                enter = fadeIn(animationSpec = tween(durationMillis = 340)) +
+                    slideInVertically(
+                        initialOffsetY = { it / 4 },
+                        animationSpec = tween(durationMillis = 340)
+                    ) +
+                    expandVertically(animationSpec = tween(durationMillis = 320)),
+                exit = fadeOut(animationSpec = tween(durationMillis = 180)) +
+                    shrinkVertically(animationSpec = tween(durationMillis = 180))
             ) {
                 state.ocrResult?.let { result ->
                     OcrResultsList(
