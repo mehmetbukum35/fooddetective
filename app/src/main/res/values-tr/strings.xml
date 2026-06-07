@@ -128,6 +128,10 @@
     <string name="button_allow_permission">İzin Ver</string>
     <string name="camera_screen_title">Etiketi Tara</string>
     <string name="camera_overlay_instruction">İçindekiler yazısını bu çerçeveye hizalayın</string>
+    <string name="camera_live_scan_label">Canlı Tarama</string>
+    <string name="camera_live_scan_hint">İçindekiler listesini çerçeveye tutun. Canlı tarama açıkken OCR birkaç saniyede bir çalışır.</string>
+    <string name="camera_live_codes_found">%1$s bulundu</string>
+    <string name="camera_live_show_results">Sonuçları Göster</string>
     <string name="button_close">Kapat</string>
     <string name="a11y_gallery_button">Galeriden etiket fotoğrafı seç</string>
     <string name="a11y_capture_button">Etiket fotoğrafı çek</string>
