@@ -148,6 +148,9 @@ fun FoodDetectiveScreen(
                     TextRecognizerHelper.recognizeFromBitmap(bitmap, rotation)
                 }
             },
+            onLiveTextConfirmed = { rawText ->
+                viewModel.searchFromOcr { rawText }
+            },
             onGalleryClick = { galleryLauncher.launch("image/*") },
             onClose = { viewModel.closeCamera() },
             onError = { message -> viewModel.setCameraError(message) }
@@ -248,9 +251,7 @@ fun FoodDetectiveContent(
     ) {
         PremiumHeader(
             trailing = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(
                         onClick = { showAboutGuide = true },
                         modifier = Modifier.size(34.dp),
@@ -292,15 +293,10 @@ fun FoodDetectiveContent(
         )
 
         if (state.isLoading) {
-            LoadingState(
-                modifier = Modifier.padding(horizontal = 20.dp)
-            )
+            LoadingState(modifier = Modifier.padding(horizontal = 20.dp))
         } else {
             state.errorMessage?.let { message ->
-                ErrorCard(
-                    message = message.asString(),
-                    modifier = Modifier.padding(horizontal = 20.dp)
-                )
+                ErrorCard(message = message.asString(), modifier = Modifier.padding(horizontal = 20.dp))
             }
         }
 
@@ -308,43 +304,26 @@ fun FoodDetectiveContent(
             AnimatedVisibility(
                 visible = state.singleResult != null,
                 enter = fadeIn(animationSpec = tween(durationMillis = 360)) +
-                    slideInVertically(
-                        initialOffsetY = { it / 3 },
-                        animationSpec = tween(durationMillis = 360)
-                    ) +
-                    scaleIn(
-                        initialScale = 0.97f,
-                        animationSpec = tween(durationMillis = 360)
-                    ) +
+                    slideInVertically(initialOffsetY = { it / 3 }, animationSpec = tween(durationMillis = 360)) +
+                    scaleIn(initialScale = 0.97f, animationSpec = tween(durationMillis = 360)) +
                     expandVertically(animationSpec = tween(durationMillis = 300)),
-                exit = fadeOut(animationSpec = tween(durationMillis = 180)) +
-                    shrinkVertically(animationSpec = tween(durationMillis = 180))
+                exit = fadeOut(animationSpec = tween(durationMillis = 180)) + shrinkVertically(animationSpec = tween(durationMillis = 180))
             ) {
                 state.singleResult?.let { additive ->
-                    ResultCard(
-                        additive = additive,
-                        modifier = Modifier.padding(horizontal = 20.dp)
-                    )
+                    ResultCard(additive = additive, modifier = Modifier.padding(horizontal = 20.dp))
                 }
             }
 
             if (state.singleResult == null && state.hasSearched && state.ocrResult == null && state.errorMessage == null) {
-                NotFoundText(
-                    text = stringResource(R.string.search_not_found_message),
-                    modifier = Modifier.padding(horizontal = 20.dp)
-                )
+                NotFoundText(text = stringResource(R.string.search_not_found_message), modifier = Modifier.padding(horizontal = 20.dp))
             }
 
             AnimatedVisibility(
                 visible = state.ocrResult != null,
                 enter = fadeIn(animationSpec = tween(durationMillis = 340)) +
-                    slideInVertically(
-                        initialOffsetY = { it / 4 },
-                        animationSpec = tween(durationMillis = 340)
-                    ) +
+                    slideInVertically(initialOffsetY = { it / 4 }, animationSpec = tween(durationMillis = 340)) +
                     expandVertically(animationSpec = tween(durationMillis = 320)),
-                exit = fadeOut(animationSpec = tween(durationMillis = 180)) +
-                    shrinkVertically(animationSpec = tween(durationMillis = 180))
+                exit = fadeOut(animationSpec = tween(durationMillis = 180)) + shrinkVertically(animationSpec = tween(durationMillis = 180))
             ) {
                 state.ocrResult?.let { result ->
                     OcrResultsList(
@@ -368,10 +347,7 @@ fun FoodDetectiveContent(
 }
 
 @Composable
-private fun ApiConnectionIndicator(
-    status: ApiConnectionStatus,
-    modifier: Modifier = Modifier
-) {
+private fun ApiConnectionIndicator(status: ApiConnectionStatus, modifier: Modifier = Modifier) {
     val label = when (status) {
         ApiConnectionStatus.CHECKING -> stringResource(R.string.api_status_checking)
         ApiConnectionStatus.ONLINE -> stringResource(R.string.api_status_online)
@@ -393,19 +369,9 @@ private fun ApiConnectionIndicator(
             .padding(horizontal = 10.dp, vertical = 6.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(9.dp)
-                .clip(CircleShape)
-                .background(dotColor)
-        )
+        Box(modifier = Modifier.size(9.dp).clip(CircleShape).background(dotColor))
         Spacer(modifier = Modifier.width(6.dp))
-        Text(
-            text = label,
-            color = Color.White,
-            fontSize = 11.sp,
-            fontWeight = FontWeight.Bold
-        )
+        Text(text = label, color = Color.White, fontSize = 11.sp, fontWeight = FontWeight.Bold)
     }
 }
 
