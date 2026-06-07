@@ -9,15 +9,19 @@ import androidx.camera.core.ImageProxy
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.view.PreviewView
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.PhotoLibrary
@@ -33,9 +37,13 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -45,12 +53,6 @@ import java.util.concurrent.Executors
 
 private const val OCR_MAX_BITMAP_DIMENSION = 1024
 
-/**
- * Kamera ekranı.
- *
- * Bu ekrana yalnızca kamera izni alındıktan sonra girilir. İzin isteme akışı
- * FoodDetectiveScreen içinde yönetilir; burada sadece CameraX başlatılır.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CameraScreen(
@@ -87,9 +89,7 @@ private fun CameraContent(
         onDispose {
             executor.shutdown()
             cameraProviderFuture.addListener({
-                runCatching {
-                    cameraProviderFuture.get().unbindAll()
-                }
+                runCatching { cameraProviderFuture.get().unbindAll() }
             }, ContextCompat.getMainExecutor(context))
         }
     }
@@ -130,6 +130,12 @@ private fun CameraContent(
             }
         )
 
+        LabelAlignmentOverlay(
+            modifier = Modifier
+                .align(Alignment.Center)
+                .padding(horizontal = 30.dp)
+        )
+
         TopAppBar(
             title = { Text(stringResource(R.string.camera_screen_title)) },
             navigationIcon = {
@@ -167,6 +173,46 @@ private fun CameraContent(
 
             Spacer(Modifier.width(48.dp))
         }
+    }
+}
+
+@Composable
+private fun LabelAlignmentOverlay(modifier: Modifier = Modifier) {
+    Box(
+        modifier = modifier.fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(190.dp)
+                .border(
+                    width = 2.dp,
+                    color = Color.White.copy(alpha = 0.86f),
+                    shape = RoundedCornerShape(22.dp)
+                )
+                .background(
+                    color = Color.Black.copy(alpha = 0.08f),
+                    shape = RoundedCornerShape(22.dp)
+                )
+        )
+
+        Text(
+            text = stringResource(R.string.camera_overlay_instruction),
+            modifier = Modifier
+                .align(Alignment.BottomCenter)
+                .padding(bottom = 16.dp)
+                .background(
+                    color = Color.Black.copy(alpha = 0.52f),
+                    shape = RoundedCornerShape(100.dp)
+                )
+                .padding(horizontal = 14.dp, vertical = 8.dp),
+            color = Color.White,
+            fontSize = 13.sp,
+            lineHeight = 17.sp,
+            fontWeight = FontWeight.Bold,
+            textAlign = TextAlign.Center
+        )
     }
 }
 
@@ -242,10 +288,5 @@ private fun scaleBitmapForOcr(bitmap: Bitmap, maxDimension: Int): Bitmap {
     val scaledWidth = (width * scale).toInt().coerceAtLeast(1)
     val scaledHeight = (height * scale).toInt().coerceAtLeast(1)
 
-    return Bitmap.createScaledBitmap(
-        bitmap,
-        scaledWidth,
-        scaledHeight,
-        true
-    )
+    return Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true)
 }
