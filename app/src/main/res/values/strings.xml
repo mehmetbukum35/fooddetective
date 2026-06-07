@@ -125,6 +125,7 @@
     <string name="camera_permission_denied_message">Camera permission was not granted. You can enable it to scan labels or use the Gallery option.</string>
     <string name="button_allow_permission">Allow Permission</string>
     <string name="camera_screen_title">Scan Label</string>
+    <string name="camera_overlay_instruction">Align the ingredients text inside this frame</string>
     <string name="button_close">Close</string>
     <string name="a11y_gallery_button">Choose a label photo from the gallery</string>
     <string name="a11y_capture_button">Take a label photo</string>
