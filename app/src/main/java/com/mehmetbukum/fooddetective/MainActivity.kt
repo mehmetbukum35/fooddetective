@@ -20,6 +20,7 @@ import com.mehmetbukum.fooddetective.data.AdditiveRepository
 import com.mehmetbukum.fooddetective.data.AdditivesVersionResponse
 import com.mehmetbukum.fooddetective.data.AppDatabase
 import com.mehmetbukum.fooddetective.data.remote.AdditivesRemoteFactory
+import com.mehmetbukum.fooddetective.localization.AppLanguage
 import com.mehmetbukum.fooddetective.localization.AppLanguagePreferences
 import com.mehmetbukum.fooddetective.localization.AppLocaleProvider
 import com.mehmetbukum.fooddetective.ui.screens.FoodDetectiveScreen
@@ -28,6 +29,7 @@ import com.mehmetbukum.fooddetective.ui.theme.EDetectiveTheme
 import com.mehmetbukum.fooddetective.ui.theme.isDarkTheme
 import java.text.DateFormat
 import java.util.Date
+import java.util.Locale
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -121,9 +123,14 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun formatSyncTime(timeMillis: Long): String {
+        val locale = when (AppLanguagePreferences.getLanguage(this)) {
+            AppLanguage.ENGLISH -> Locale.ENGLISH
+            AppLanguage.TURKISH -> Locale("tr", "TR")
+            AppLanguage.SYSTEM -> Locale.getDefault()
+        }
         val date = Date(timeMillis)
-        val dateText = DateFormat.getDateInstance(DateFormat.MEDIUM).format(date)
-        val timeText = DateFormat.getTimeInstance(DateFormat.SHORT).format(date)
+        val dateText = DateFormat.getDateInstance(DateFormat.MEDIUM, locale).format(date)
+        val timeText = DateFormat.getTimeInstance(DateFormat.SHORT, locale).format(date)
         return "$dateText $timeText"
     }
 
