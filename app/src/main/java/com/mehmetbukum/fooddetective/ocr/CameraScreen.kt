@@ -3,6 +3,7 @@ package com.mehmetbukum.fooddetective.ocr
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.camera.core.CameraSelector
+import androidx.camera.core.ImageAnalysis
 import androidx.camera.core.ImageCapture
 import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.ImageProxy
@@ -13,6 +14,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,16 +27,23 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Camera
 import androidx.compose.material.icons.filled.PhotoLibrary
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.LargeFloatingActionButton
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -57,22 +66,7 @@ private const val OCR_MAX_BITMAP_DIMENSION = 1024
 @Composable
 fun CameraScreen(
     onImageCaptured: (Bitmap, Int) -> Unit,
-    onGalleryClick: () -> Unit,
-    onClose: () -> Unit,
-    onError: (UiText) -> Unit
-) {
-    CameraContent(
-        onImageCaptured = onImageCaptured,
-        onGalleryClick = onGalleryClick,
-        onClose = onClose,
-        onError = onError
-    )
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun CameraContent(
-    onImageCaptured: (Bitmap, Int) -> Unit,
+    onLiveTextConfirmed: (String) -> Unit,
     onGalleryClick: () -> Unit,
     onClose: () -> Unit,
     onError: (UiText) -> Unit
@@ -80,13 +74,27 @@ private fun CameraContent(
     val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
     val imageCapture = remember { ImageCapture.Builder().build() }
+    val imageAnalysis = remember {
+        ImageAnalysis.Builder()
+            .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
+            .build()
+    }
     val executor = remember { Executors.newSingleThreadExecutor() }
     val cameraProviderFuture = remember { ProcessCameraProvider.getInstance(context) }
+    val mainExecutor = remember(context) { ContextCompat.getMainExecutor(context) }
+    val liveLabel = stringResource(R.string.camera_live_scan_label)
+    val liveHint = stringResource(R.string.camera_live_scan_hint)
     val galleryDescription = stringResource(R.string.a11y_gallery_button)
     val captureDescription = stringResource(R.string.a11y_capture_button)
 
+    var liveScanEnabled by remember { mutableStateOf(false) }
+    var liveCodes by remember { mutableStateOf<List<String>>(emptyList()) }
+    var liveRawText by remember { mutableStateOf("") }
+    val liveScanEnabledState by rememberUpdatedState(liveScanEnabled)
+
     DisposableEffect(Unit) {
         onDispose {
+            imageAnalysis.clearAnalyzer()
             executor.shutdown()
             cameraProviderFuture.addListener({
                 runCatching { cameraProviderFuture.get().unbindAll() }
@@ -108,13 +116,26 @@ private fun CameraContent(
                         val preview = Preview.Builder().build().also {
                             it.surfaceProvider = previewView.surfaceProvider
                         }
+                        imageAnalysis.setAnalyzer(
+                            executor,
+                            LiveOcrAnalyzer(
+                                isEnabled = { liveScanEnabledState },
+                                onCodesDetected = { codes, rawText ->
+                                    mainExecutor.execute {
+                                        liveCodes = codes
+                                        liveRawText = rawText
+                                    }
+                                }
+                            )
+                        )
 
                         cameraProvider.unbindAll()
                         cameraProvider.bindToLifecycle(
                             lifecycleOwner,
                             CameraSelector.DEFAULT_BACK_CAMERA,
                             preview,
-                            imageCapture
+                            imageCapture,
+                            imageAnalysis
                         )
                     }.onFailure { throwable ->
                         onError(
@@ -143,6 +164,63 @@ private fun CameraContent(
             },
             modifier = Modifier.align(Alignment.TopCenter)
         )
+
+        Card(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .padding(start = 20.dp, top = 86.dp, end = 20.dp)
+                .fillMaxWidth(),
+            shape = RoundedCornerShape(22.dp),
+            colors = CardDefaults.cardColors(containerColor = Color.Black.copy(alpha = 0.52f))
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 10.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.weight(1f).padding(end = 12.dp)) {
+                    Text(text = liveLabel, color = Color.White, fontWeight = FontWeight.Black, fontSize = 14.sp)
+                    Text(text = liveHint, color = Color.White.copy(alpha = 0.84f), fontSize = 11.sp, lineHeight = 15.sp)
+                }
+                Switch(
+                    checked = liveScanEnabled,
+                    onCheckedChange = { checked ->
+                        liveScanEnabled = checked
+                        if (!checked) {
+                            liveCodes = emptyList()
+                            liveRawText = ""
+                        }
+                    }
+                )
+            }
+        }
+
+        if (liveScanEnabled && liveCodes.isNotEmpty()) {
+            Card(
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .padding(start = 20.dp, end = 20.dp, bottom = 120.dp)
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(22.dp),
+                colors = CardDefaults.cardColors(containerColor = Color.White.copy(alpha = 0.94f)),
+                elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
+            ) {
+                Column(modifier = Modifier.padding(16.dp)) {
+                    Text(
+                        text = stringResource(R.string.camera_live_codes_found, liveCodes.joinToString(", ")),
+                        color = Color.Black,
+                        fontWeight = FontWeight.Black,
+                        fontSize = 15.sp
+                    )
+                    Spacer(modifier = Modifier.height(8.dp))
+                    TextButton(onClick = { onLiveTextConfirmed(liveRawText) }) {
+                        Text(stringResource(R.string.camera_live_show_results))
+                    }
+                }
+            }
+        }
 
         Row(
             modifier = Modifier
@@ -186,15 +264,8 @@ private fun LabelAlignmentOverlay(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(190.dp)
-                .border(
-                    width = 2.dp,
-                    color = Color.White.copy(alpha = 0.86f),
-                    shape = RoundedCornerShape(22.dp)
-                )
-                .background(
-                    color = Color.Black.copy(alpha = 0.08f),
-                    shape = RoundedCornerShape(22.dp)
-                )
+                .border(2.dp, Color.White.copy(alpha = 0.86f), RoundedCornerShape(22.dp))
+                .background(Color.Black.copy(alpha = 0.08f), RoundedCornerShape(22.dp))
         )
 
         Text(
@@ -202,10 +273,7 @@ private fun LabelAlignmentOverlay(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 16.dp)
-                .background(
-                    color = Color.Black.copy(alpha = 0.52f),
-                    shape = RoundedCornerShape(100.dp)
-                )
+                .background(Color.Black.copy(alpha = 0.52f), RoundedCornerShape(100.dp))
                 .padding(horizontal = 14.dp, vertical = 8.dp),
             color = Color.White,
             fontSize = 13.sp,
@@ -231,24 +299,12 @@ private fun captureImage(
                     val originalBitmap = image.toBitmap()
                     val rotation = image.imageInfo.rotationDegrees
                     image.close()
-
-                    val ocrBitmap = scaleBitmapForOcr(
-                        bitmap = originalBitmap,
-                        maxDimension = OCR_MAX_BITMAP_DIMENSION
-                    )
-
-                    if (ocrBitmap !== originalBitmap) {
-                        originalBitmap.recycle()
-                    }
-
-                    ContextCompat.getMainExecutor(context).execute {
-                        onImageCaptured(ocrBitmap, rotation)
-                    }
+                    val ocrBitmap = scaleBitmapForOcr(originalBitmap, OCR_MAX_BITMAP_DIMENSION)
+                    if (ocrBitmap !== originalBitmap) originalBitmap.recycle()
+                    ContextCompat.getMainExecutor(context).execute { onImageCaptured(ocrBitmap, rotation) }
                 } catch (oom: OutOfMemoryError) {
                     image.close()
-                    ContextCompat.getMainExecutor(context).execute {
-                        onError(UiText.Resource(R.string.error_photo_too_large))
-                    }
+                    ContextCompat.getMainExecutor(context).execute { onError(UiText.Resource(R.string.error_photo_too_large)) }
                 } catch (throwable: Throwable) {
                     image.close()
                     ContextCompat.getMainExecutor(context).execute {
@@ -279,14 +335,9 @@ private fun captureImage(
 private fun scaleBitmapForOcr(bitmap: Bitmap, maxDimension: Int): Bitmap {
     val width = bitmap.width
     val height = bitmap.height
-
-    if (width <= maxDimension && height <= maxDimension) {
-        return bitmap
-    }
-
+    if (width <= maxDimension && height <= maxDimension) return bitmap
     val scale = maxDimension.toFloat() / maxOf(width, height)
     val scaledWidth = (width * scale).toInt().coerceAtLeast(1)
     val scaledHeight = (height * scale).toInt().coerceAtLeast(1)
-
     return Bitmap.createScaledBitmap(bitmap, scaledWidth, scaledHeight, true)
 }
