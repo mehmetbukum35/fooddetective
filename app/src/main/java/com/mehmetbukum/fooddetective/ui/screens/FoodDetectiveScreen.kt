@@ -8,6 +8,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -297,27 +303,39 @@ fun FoodDetectiveContent(
         }
 
         if (!state.isLoading) {
-            state.singleResult?.let { additive ->
-                ResultCard(
-                    additive = additive,
-                    modifier = Modifier.padding(horizontal = 20.dp)
-                )
-            } ?: run {
-                if (state.hasSearched && state.ocrResult == null && state.errorMessage == null) {
-                    NotFoundText(
-                        text = stringResource(R.string.search_not_found_message),
+            AnimatedVisibility(
+                visible = state.singleResult != null,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { it / 5 }) + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                state.singleResult?.let { additive ->
+                    ResultCard(
+                        additive = additive,
                         modifier = Modifier.padding(horizontal = 20.dp)
                     )
                 }
             }
 
-            state.ocrResult?.let { result ->
-                OcrResultsList(
-                    result = result,
-                    modifier = Modifier.padding(horizontal = 20.dp),
-                    onRetryCamera = onRetryCamera,
-                    onRetryGallery = onRetryGallery
+            if (state.singleResult == null && state.hasSearched && state.ocrResult == null && state.errorMessage == null) {
+                NotFoundText(
+                    text = stringResource(R.string.search_not_found_message),
+                    modifier = Modifier.padding(horizontal = 20.dp)
                 )
+            }
+
+            AnimatedVisibility(
+                visible = state.ocrResult != null,
+                enter = fadeIn() + slideInVertically(initialOffsetY = { it / 6 }) + expandVertically(),
+                exit = fadeOut() + shrinkVertically()
+            ) {
+                state.ocrResult?.let { result ->
+                    OcrResultsList(
+                        result = result,
+                        modifier = Modifier.padding(horizontal = 20.dp),
+                        onRetryCamera = onRetryCamera,
+                        onRetryGallery = onRetryGallery
+                    )
+                }
             }
         }
 
