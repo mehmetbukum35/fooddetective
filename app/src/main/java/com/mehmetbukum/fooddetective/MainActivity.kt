@@ -75,6 +75,7 @@ class MainActivity : ComponentActivity() {
                             onLanguageSelected = { language ->
                                 AppLanguagePreferences.setLanguage(this, language)
                                 selectedLanguage = language
+                                detectiveViewModel.refreshSyncMessageTime(getLastSuccessfulSyncText())
                             },
                             onThemeSelected = { theme ->
                                 AppThemePreferences.setTheme(this, theme)
