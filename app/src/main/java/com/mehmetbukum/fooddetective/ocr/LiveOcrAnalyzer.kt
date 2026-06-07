@@ -10,6 +10,7 @@ import com.mehmetbukum.fooddetective.data.CodeParser
 import java.util.concurrent.atomic.AtomicBoolean
 
 class LiveOcrAnalyzer(
+    private val isEnabled: () -> Boolean,
     private val throttleMillis: Long = DEFAULT_THROTTLE_MILLIS,
     private val onCodesDetected: (codes: List<String>, rawText: String) -> Unit
 ) : ImageAnalysis.Analyzer {
@@ -21,6 +22,11 @@ class LiveOcrAnalyzer(
 
     @OptIn(ExperimentalGetImage::class)
     override fun analyze(imageProxy: ImageProxy) {
+        if (!isEnabled()) {
+            imageProxy.close()
+            return
+        }
+
         val now = System.currentTimeMillis()
         val mediaImage = imageProxy.image
 
