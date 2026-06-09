@@ -62,7 +62,8 @@ private data class DayCloud(
     val alpha: Float,
     val speed: Float,
     val phase: Float,
-    val wave: Float
+    val wave: Float,
+    val depth: Float
 )
 
 private data class DaySun(
@@ -80,9 +81,9 @@ fun AnimatedHeaderSpace(modifier: Modifier = Modifier) {
     val clouds = remember { buildClouds() }
     val sun = remember {
         DaySun(
-            x = randomBetween(0.74f, 0.88f),
-            y = randomBetween(0.19f, 0.34f),
-            radius = randomBetween(0.068f, 0.084f),
+            x = randomBetween(0.76f, 0.88f),
+            y = randomBetween(0.18f, 0.31f),
+            radius = randomBetween(0.066f, 0.080f),
             phase = randomBetween(0f, 1f)
         )
     }
@@ -119,10 +120,10 @@ fun AnimatedHeaderSpace(modifier: Modifier = Modifier) {
     )
     val clock = if (running) animatedClock else 0f
 
-    val particleProgress = wrap(clock * (60_000f / 13_000f))
-    val cometProgress = wrap(clock * (60_000f / 18_500f))
-    val cloudProgress = wrap(clock * (60_000f / 42_000f))
-    val glowProgress = wrap(clock * (60_000f / 9_500f))
+    val particleProgress = wrap(clock * (60_000f / 15_000f))
+    val cometProgress = wrap(clock * (60_000f / 19_500f))
+    val cloudProgress = wrap(clock * (60_000f / 52_000f))
+    val glowProgress = wrap(clock * (60_000f / 11_500f))
     val breathe = 1f + 0.003f * sinT(glowProgress * TWO_PI)
 
     Canvas(
@@ -147,8 +148,8 @@ fun AnimatedHeaderSpace(modifier: Modifier = Modifier) {
             drawRandomFeelingComets(comets, cometProgress)
         } else {
             drawDaySkyGlow(glowProgress)
-            drawSoftSun(sun, glowProgress)
-            drawSoftClouds(clouds, cloudProgress)
+            drawAtmosphericSun(sun, glowProgress)
+            drawRealisticClouds(clouds, cloudProgress)
         }
     }
 }
@@ -159,118 +160,140 @@ private fun sinT(rad: Float): Float = sin(rad.toDouble()).toFloat()
 private fun cosT(rad: Float): Float = cos(rad.toDouble()).toFloat()
 
 private fun buildParticles() = listOf(
-    SpaceParticle(0.06f, 0.18f, 1.2f, 0.56f, 48f, -26f, 1.15f, 0.02f),
-    SpaceParticle(0.13f, 0.66f, 1.4f, 0.68f, -38f, 42f, 1.05f, 0.21f),
-    SpaceParticle(0.20f, 0.36f, 1.9f, 0.84f, 42f, 30f, 1.32f, 0.41f),
-    SpaceParticle(0.27f, 0.82f, 1.1f, 0.52f, -52f, -24f, 0.94f, 0.66f),
-    SpaceParticle(0.34f, 0.14f, 1.3f, 0.58f, 35f, 48f, 1.18f, 0.14f),
-    SpaceParticle(0.42f, 0.55f, 1.7f, 0.74f, -44f, 36f, 1.02f, 0.77f),
-    SpaceParticle(0.51f, 0.27f, 1.0f, 0.50f, 54f, 22f, 1.42f, 0.32f),
-    SpaceParticle(0.59f, 0.74f, 2.0f, 0.82f, -30f, -50f, 0.96f, 0.54f),
-    SpaceParticle(0.67f, 0.12f, 1.2f, 0.56f, 48f, 32f, 1.26f, 0.86f),
-    SpaceParticle(0.76f, 0.43f, 1.5f, 0.70f, -46f, 28f, 1.12f, 0.19f),
-    SpaceParticle(0.84f, 0.24f, 1.1f, 0.48f, 40f, -42f, 1.38f, 0.61f),
-    SpaceParticle(0.91f, 0.70f, 1.8f, 0.78f, -56f, 36f, 0.91f, 0.47f),
-    SpaceParticle(0.10f, 0.88f, 1.0f, 0.46f, 32f, -48f, 1.08f, 0.91f),
-    SpaceParticle(0.47f, 0.88f, 1.2f, 0.53f, 42f, -40f, 1.20f, 0.73f),
-    SpaceParticle(0.72f, 0.84f, 1.0f, 0.48f, -36f, -52f, 1.30f, 0.27f),
-    SpaceParticle(0.96f, 0.38f, 1.3f, 0.58f, -46f, 44f, 1.01f, 0.08f),
-    SpaceParticle(0.38f, 0.39f, 0.9f, 0.42f, 60f, -18f, 1.45f, 0.58f),
-    SpaceParticle(0.57f, 0.48f, 0.9f, 0.42f, -58f, 18f, 0.98f, 0.36f),
-    SpaceParticle(0.80f, 0.58f, 1.0f, 0.44f, 36f, 58f, 1.16f, 0.80f),
-    SpaceParticle(0.23f, 0.22f, 0.9f, 0.38f, -26f, 54f, 1.24f, 0.69f),
-    SpaceParticle(0.62f, 0.18f, 1.0f, 0.42f, 28f, -56f, 1.10f, 0.25f),
-    SpaceParticle(0.04f, 0.48f, 0.9f, 0.38f, 46f, 40f, 1.48f, 0.51f)
+    SpaceParticle(0.06f, 0.18f, 1.1f, 0.52f, 42f, -24f, 1.04f, 0.02f),
+    SpaceParticle(0.13f, 0.66f, 1.2f, 0.62f, -34f, 38f, 0.98f, 0.21f),
+    SpaceParticle(0.20f, 0.36f, 1.8f, 0.80f, 38f, 28f, 1.18f, 0.41f),
+    SpaceParticle(0.27f, 0.82f, 1.0f, 0.48f, -46f, -22f, 0.86f, 0.66f),
+    SpaceParticle(0.34f, 0.14f, 1.2f, 0.54f, 32f, 44f, 1.08f, 0.14f),
+    SpaceParticle(0.42f, 0.55f, 1.6f, 0.68f, -40f, 32f, 0.94f, 0.77f),
+    SpaceParticle(0.51f, 0.27f, 0.9f, 0.46f, 50f, 20f, 1.30f, 0.32f),
+    SpaceParticle(0.59f, 0.74f, 1.8f, 0.76f, -26f, -46f, 0.90f, 0.54f),
+    SpaceParticle(0.67f, 0.12f, 1.1f, 0.52f, 44f, 30f, 1.16f, 0.86f),
+    SpaceParticle(0.76f, 0.43f, 1.4f, 0.64f, -42f, 26f, 1.02f, 0.19f),
+    SpaceParticle(0.84f, 0.24f, 1.0f, 0.44f, 36f, -38f, 1.25f, 0.61f),
+    SpaceParticle(0.91f, 0.70f, 1.6f, 0.72f, -50f, 32f, 0.84f, 0.47f),
+    SpaceParticle(0.10f, 0.88f, 0.9f, 0.42f, 28f, -44f, 1.00f, 0.91f),
+    SpaceParticle(0.47f, 0.88f, 1.1f, 0.48f, 38f, -36f, 1.10f, 0.73f),
+    SpaceParticle(0.72f, 0.84f, 0.9f, 0.42f, -32f, -46f, 1.18f, 0.27f),
+    SpaceParticle(0.96f, 0.38f, 1.2f, 0.52f, -42f, 40f, 0.94f, 0.08f),
+    SpaceParticle(0.38f, 0.39f, 0.8f, 0.38f, 54f, -16f, 1.34f, 0.58f),
+    SpaceParticle(0.57f, 0.48f, 0.8f, 0.38f, -52f, 16f, 0.92f, 0.36f),
+    SpaceParticle(0.80f, 0.58f, 0.9f, 0.40f, 32f, 52f, 1.08f, 0.80f),
+    SpaceParticle(0.23f, 0.22f, 0.8f, 0.34f, -24f, 48f, 1.14f, 0.69f),
+    SpaceParticle(0.62f, 0.18f, 0.9f, 0.38f, 26f, -50f, 1.02f, 0.25f),
+    SpaceParticle(0.04f, 0.48f, 0.8f, 0.34f, 42f, 36f, 1.36f, 0.51f)
 )
 
 private fun buildComets() = listOf(
-    HeaderComet(-0.18f, 0.20f, 1.18f, 0.76f, 0.04f, 0.22f, 92f, 2.8f),
-    HeaderComet(1.12f, 0.08f, -0.18f, 0.62f, 0.39f, 0.16f, 70f, 2.2f),
-    HeaderComet(-0.10f, 0.74f, 0.86f, 0.12f, 0.71f, 0.13f, 56f, 1.8f)
+    HeaderComet(-0.18f, 0.20f, 1.18f, 0.76f, 0.04f, 0.20f, 104f, 2.5f),
+    HeaderComet(1.12f, 0.08f, -0.18f, 0.62f, 0.39f, 0.15f, 76f, 2.0f),
+    HeaderComet(-0.10f, 0.74f, 0.86f, 0.12f, 0.71f, 0.12f, 62f, 1.7f)
 )
 
 private fun buildClouds() = listOf(
-    DayCloud(y = 0.26f, width = 0.27f, alpha = 0.42f, speed = 0.22f, phase = 0.08f, wave = 0.50f),
-    DayCloud(y = 0.44f, width = 0.22f, alpha = 0.34f, speed = 0.16f, phase = 0.46f, wave = 0.34f),
-    DayCloud(y = 0.63f, width = 0.18f, alpha = 0.25f, speed = 0.12f, phase = 0.72f, wave = 0.22f),
-    DayCloud(y = 0.36f, width = 0.15f, alpha = 0.20f, speed = 0.10f, phase = 0.87f, wave = 0.18f)
+    DayCloud(y = 0.25f, width = 0.30f, alpha = 0.37f, speed = 0.19f, phase = 0.08f, wave = 0.52f, depth = 1.00f),
+    DayCloud(y = 0.43f, width = 0.25f, alpha = 0.31f, speed = 0.14f, phase = 0.46f, wave = 0.34f, depth = 0.82f),
+    DayCloud(y = 0.62f, width = 0.20f, alpha = 0.23f, speed = 0.10f, phase = 0.72f, wave = 0.22f, depth = 0.66f),
+    DayCloud(y = 0.35f, width = 0.16f, alpha = 0.18f, speed = 0.08f, phase = 0.87f, wave = 0.18f, depth = 0.54f)
 )
 
 private fun DrawScope.drawDaySkyGlow(progress: Float) {
     val pulse = 0.72f + 0.28f * sinT(progress * TWO_PI).coerceAtLeast(0f)
     drawCircle(
-        color = Color.White.copy(alpha = 0.045f * pulse),
-        radius = size.minDimension * 0.48f,
-        center = Offset(size.width * 0.84f, size.height * 0.34f)
+        color = Color.White.copy(alpha = 0.035f * pulse),
+        radius = size.minDimension * 0.54f,
+        center = Offset(size.width * 0.82f, size.height * 0.36f)
     )
     drawCircle(
-        color = Color(0xFFDDFBEA).copy(alpha = 0.055f * pulse),
-        radius = size.minDimension * 0.34f,
-        center = Offset(size.width * 0.74f, size.height * 0.64f)
+        color = Color(0xFFE7FFF0).copy(alpha = 0.050f * pulse),
+        radius = size.minDimension * 0.39f,
+        center = Offset(size.width * 0.73f, size.height * 0.66f)
     )
     drawCircle(
-        color = Color(0xFFFFE7B8).copy(alpha = 0.032f * pulse),
-        radius = size.minDimension * 0.26f,
-        center = Offset(size.width * 0.92f, size.height * 0.24f)
+        color = Color(0xFFFFE7B8).copy(alpha = 0.026f * pulse),
+        radius = size.minDimension * 0.30f,
+        center = Offset(size.width * 0.90f, size.height * 0.23f)
     )
 }
 
-private fun DrawScope.drawSoftSun(sun: DaySun, progress: Float) {
+private fun DrawScope.drawAtmosphericSun(sun: DaySun, progress: Float) {
     val phaseProgress = wrap(progress + sun.phase)
     val pulse = 0.82f + 0.18f * sinT(phaseProgress * TWO_PI)
     val center = Offset(size.width * sun.x, size.height * sun.y)
     val radius = size.minDimension * sun.radius
 
-    drawCircle(Color(0xFFFFD66B).copy(alpha = 0.085f * pulse), radius * 4.4f, center)
-    drawCircle(Color(0xFFFFE7A3).copy(alpha = 0.16f * pulse), radius * 2.8f, center)
-    drawCircle(Color(0xFFFFF3B0).copy(alpha = 0.90f), radius, center)
+    repeat(10) { index ->
+        val angle = index * TWO_PI / 10f + phaseProgress * 0.16f
+        val rayStart = center + Offset(cosT(angle), sinT(angle)) * radius * 1.45f
+        val rayEnd = center + Offset(cosT(angle), sinT(angle)) * radius * (2.00f + 0.16f * sinT(phaseProgress * TWO_PI + index))
+        drawLine(
+            color = Color(0xFFFFE7A3).copy(alpha = 0.045f * pulse),
+            start = rayStart,
+            end = rayEnd,
+            strokeWidth = radius * 0.07f,
+            cap = StrokeCap.Round
+        )
+    }
+
+    drawCircle(Color(0xFFFFD66B).copy(alpha = 0.070f * pulse), radius * 5.0f, center)
+    drawCircle(Color(0xFFFFE7A3).copy(alpha = 0.135f * pulse), radius * 3.1f, center)
+    drawCircle(Color(0xFFFFF3B0).copy(alpha = 0.92f), radius, center)
+    drawCircle(Color(0xFFFFD66B).copy(alpha = 0.34f), radius * 0.78f, center + Offset(radius * 0.08f, radius * 0.10f))
     drawCircle(
-        Color.White.copy(alpha = 0.22f),
-        radius * 0.36f,
-        center + Offset(-radius * 0.28f, -radius * 0.32f)
+        Color.White.copy(alpha = 0.25f),
+        radius * 0.34f,
+        center + Offset(-radius * 0.30f, -radius * 0.35f)
     )
 }
 
-private fun DrawScope.drawSoftClouds(clouds: List<DayCloud>, progress: Float) {
+private fun DrawScope.drawRealisticClouds(clouds: List<DayCloud>, progress: Float) {
     clouds.forEachIndexed { index, cloud ->
         val cloudWidth = size.minDimension * cloud.width
-        val travelWidth = size.width + cloudWidth * 2f
+        val travelWidth = size.width + cloudWidth * 2.35f
         val local = wrap(cloud.phase + progress * cloud.speed)
-        val x = -cloudWidth + travelWidth * local
-        val y = size.height * cloud.y + sinT((progress + cloud.phase) * TWO_PI) * (8f + 10f * cloud.wave)
-        val alpha = (cloud.alpha * (0.86f + 0.14f * sinT((progress + index * 0.18f) * TWO_PI))).coerceIn(0.12f, 0.50f)
+        val x = -cloudWidth * 1.18f + travelWidth * local
+        val y = size.height * cloud.y + sinT((progress + cloud.phase) * TWO_PI) * (6f + 9f * cloud.wave)
+        val alpha = (cloud.alpha * (0.90f + 0.10f * sinT((progress + index * 0.18f) * TWO_PI))).coerceIn(0.10f, 0.44f)
 
-        drawPremiumCloud(
+        drawLayeredCloud(
             center = Offset(x, y),
             width = cloudWidth,
-            alpha = alpha
+            alpha = alpha,
+            depth = cloud.depth
         )
     }
 }
 
-private fun DrawScope.drawPremiumCloud(center: Offset, width: Float, alpha: Float) {
-    val base = Color.White.copy(alpha = alpha)
-    val glow = Color.White.copy(alpha = alpha * 0.24f)
-    val mintShade = Color(0xFFDDFBEA).copy(alpha = alpha * 0.22f)
+private fun DrawScope.drawLayeredCloud(center: Offset, width: Float, alpha: Float, depth: Float) {
+    val white = Color.White.copy(alpha = alpha)
+    val highlight = Color.White.copy(alpha = alpha * 0.58f)
+    val shade = Color(0xFFD7F2E6).copy(alpha = alpha * 0.32f)
+    val lowShade = Color(0xFFAED7C8).copy(alpha = alpha * 0.12f)
 
-    drawCircle(glow, width * 0.58f, center + Offset(width * 0.03f, width * 0.04f))
-    drawCircle(mintShade, width * 0.38f, center + Offset(width * 0.16f, width * 0.08f))
-    drawCircle(base, width * 0.22f, center + Offset(-width * 0.32f, width * 0.06f))
-    drawCircle(base, width * 0.30f, center + Offset(-width * 0.10f, -width * 0.04f))
-    drawCircle(base.copy(alpha = alpha * 0.92f), width * 0.25f, center + Offset(width * 0.18f, width * 0.02f))
-    drawCircle(base.copy(alpha = alpha * 0.78f), width * 0.18f, center + Offset(width * 0.40f, width * 0.10f))
+    val baseY = center.y + width * 0.13f
+    drawCircle(Color.White.copy(alpha = alpha * 0.18f), width * 0.55f, center + Offset(width * 0.02f, width * 0.07f))
+    drawLine(lowShade, center + Offset(-width * 0.52f, baseY - center.y), center + Offset(width * 0.54f, baseY - center.y), width * 0.24f * depth, StrokeCap.Round)
+
+    drawCircle(shade, width * 0.30f, center + Offset(-width * 0.25f, width * 0.09f))
+    drawCircle(shade.copy(alpha = alpha * 0.22f), width * 0.27f, center + Offset(width * 0.20f, width * 0.11f))
+    drawCircle(white, width * 0.24f, center + Offset(-width * 0.36f, width * 0.03f))
+    drawCircle(white, width * 0.33f, center + Offset(-width * 0.11f, -width * 0.07f))
+    drawCircle(white.copy(alpha = alpha * 0.94f), width * 0.29f, center + Offset(width * 0.16f, -width * 0.01f))
+    drawCircle(white.copy(alpha = alpha * 0.76f), width * 0.20f, center + Offset(width * 0.41f, width * 0.08f))
+    drawCircle(highlight, width * 0.14f, center + Offset(-width * 0.20f, -width * 0.16f))
+    drawCircle(highlight.copy(alpha = alpha * 0.44f), width * 0.10f, center + Offset(width * 0.10f, -width * 0.15f))
 }
 
 private fun DrawScope.drawNightSkyGlow(progress: Float) {
     val pulse = 0.62f + 0.38f * sinT(progress * TWO_PI).coerceAtLeast(0f)
     drawCircle(
-        color = AppMint.copy(alpha = 0.035f * pulse),
-        radius = size.minDimension * 0.42f,
+        color = AppMint.copy(alpha = 0.028f * pulse),
+        radius = size.minDimension * 0.48f,
         center = Offset(size.width * 0.78f, size.height * 0.34f)
     )
     drawCircle(
-        color = Color(0xFFE3BD69).copy(alpha = 0.020f * pulse),
-        radius = size.minDimension * 0.24f,
+        color = Color(0xFFE3BD69).copy(alpha = 0.016f * pulse),
+        radius = size.minDimension * 0.27f,
         center = Offset(size.width * 0.92f, size.height * 0.22f)
     )
 }
@@ -283,32 +306,37 @@ private fun DrawScope.drawNightParticles(particles: List<SpaceParticle>, progres
         val secondaryAngle = (progress * (particle.speed * 0.73f) + particle.phase + 0.31f) * TWO_PI
         val baseX = size.width * particle.x
         val baseY = size.height * particle.y
-        val x = cx + (baseX - cx) * breathe + cosT(angle) * particle.driftX + sinT(angle * 0.37f + index) * 10f
-        val y = cy + (baseY - cy) * breathe + sinT(secondaryAngle) * particle.driftY + cosT(secondaryAngle * 0.41f + index) * 7f
-        val twinkle = 0.68f + 0.32f * sinT(angle + index * 0.73f).coerceAtLeast(0f)
-        val alpha = (particle.alpha * twinkle).coerceIn(0.20f, 0.88f)
+        val x = cx + (baseX - cx) * breathe + cosT(angle) * particle.driftX + sinT(angle * 0.37f + index) * 8f
+        val y = cy + (baseY - cy) * breathe + sinT(secondaryAngle) * particle.driftY + cosT(secondaryAngle * 0.41f + index) * 6f
+        val twinkle = 0.66f + 0.34f * sinT(angle + index * 0.73f).coerceAtLeast(0f)
+        val alpha = (particle.alpha * twinkle).coerceIn(0.18f, 0.84f)
         val center = Offset(x, y)
 
         drawCircle(Color.White.copy(alpha = alpha), particle.radius, center)
-        drawCircle(AppMint.copy(alpha = 0.048f * twinkle), particle.radius * 6.2f, center)
+        if (particle.radius > 1.1f) {
+            drawCircle(AppMint.copy(alpha = 0.038f * twinkle), particle.radius * 6.4f, center)
+        }
     }
 }
 
 private fun DrawScope.drawMoon(progress: Float) {
-    val pulse = 0.80f + 0.20f * sinT(progress * TWO_PI)
+    val pulse = 0.78f + 0.22f * sinT(progress * TWO_PI)
     val center = Offset(size.width * 0.84f, size.height * 0.29f)
-    val radius = size.minDimension * 0.072f
+    val radius = size.minDimension * 0.074f
 
-    drawCircle(Color(0xFFEAF7FF).copy(alpha = 0.055f * pulse), radius * 4.8f, center)
-    drawCircle(AppMint.copy(alpha = 0.050f * pulse), radius * 3.3f, center)
-    drawCircle(Color(0xFFEAF7FF).copy(alpha = 0.96f), radius, center)
+    drawCircle(Color(0xFFEAF7FF).copy(alpha = 0.050f * pulse), radius * 5.2f, center)
+    drawCircle(AppMint.copy(alpha = 0.040f * pulse), radius * 3.7f, center)
+    drawCircle(Color(0xFFEAF7FF).copy(alpha = 0.97f), radius, center)
+    drawCircle(Color(0xFFCFE7EF).copy(alpha = 0.38f), radius * 0.82f, center + Offset(-radius * 0.16f, radius * 0.12f))
     drawCircle(
-        Color(0xFF123C35).copy(alpha = 0.58f),
-        radius * 0.86f,
-        center + Offset(radius * 0.35f, -radius * 0.12f)
+        Color(0xFF123C35).copy(alpha = 0.54f),
+        radius * 0.88f,
+        center + Offset(radius * 0.36f, -radius * 0.12f)
     )
-    drawCircle(Color.White.copy(alpha = 0.10f), radius * 0.16f, center + Offset(-radius * 0.28f, -radius * 0.26f))
-    drawCircle(Color(0xFFBFD8DF).copy(alpha = 0.16f), radius * 0.10f, center + Offset(-radius * 0.04f, radius * 0.22f))
+    drawCircle(Color.White.copy(alpha = 0.16f), radius * 0.18f, center + Offset(-radius * 0.30f, -radius * 0.28f))
+    drawCircle(Color(0xFF9DBAC2).copy(alpha = 0.22f), radius * 0.11f, center + Offset(-radius * 0.04f, radius * 0.22f))
+    drawCircle(Color(0xFF9DBAC2).copy(alpha = 0.16f), radius * 0.08f, center + Offset(-radius * 0.32f, radius * 0.30f))
+    drawCircle(Color.White.copy(alpha = 0.12f), radius * 0.07f, center + Offset(radius * 0.08f, -radius * 0.34f))
 }
 
 private fun DrawScope.drawRandomFeelingComets(comets: List<HeaderComet>, progress: Float) {
@@ -331,16 +359,16 @@ private fun DrawScope.drawRandomFeelingComets(comets: List<HeaderComet>, progres
         ).normalized()
         val tailEnd = head - direction * comet.tailLength
 
-        drawLine(Color.White.copy(alpha = 0.30f * alpha), tailEnd, head, comet.strokeWidth, StrokeCap.Round)
+        drawLine(Color.White.copy(alpha = 0.26f * alpha), tailEnd, head, comet.strokeWidth, StrokeCap.Round)
         drawLine(
-            AppMint.copy(alpha = 0.22f * alpha),
+            AppMint.copy(alpha = 0.18f * alpha),
             tailEnd + Offset(-8f, 4f),
             head,
-            (comet.strokeWidth * 0.58f).coerceAtLeast(1f),
+            (comet.strokeWidth * 0.55f).coerceAtLeast(1f),
             StrokeCap.Round
         )
-        drawCircle(Color.White.copy(alpha = 0.78f * alpha), comet.strokeWidth + 0.9f, head)
-        drawCircle(AppMint.copy(alpha = 0.14f * alpha), comet.strokeWidth * 4.0f, head)
+        drawCircle(Color.White.copy(alpha = 0.74f * alpha), comet.strokeWidth + 0.8f, head)
+        drawCircle(AppMint.copy(alpha = 0.12f * alpha), comet.strokeWidth * 4.2f, head)
     }
 }
 
