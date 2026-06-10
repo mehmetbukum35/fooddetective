@@ -1,5 +1,6 @@
 package com.mehmetbukum.fooddetective.ui.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -35,7 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
@@ -44,8 +45,8 @@ import androidx.compose.ui.unit.sp
 import com.mehmetbukum.fooddetective.ApiConnectionStatus
 import com.mehmetbukum.fooddetective.R
 import com.mehmetbukum.fooddetective.UiText
-import com.mehmetbukum.fooddetective.asString
 import com.mehmetbukum.fooddetective.localization.AppLanguage
+import com.mehmetbukum.fooddetective.localization.withAppLanguage
 import com.mehmetbukum.fooddetective.ui.theme.AppThemeMode
 
 @Composable
@@ -60,7 +61,7 @@ fun AppSettingsPicker(
     onAboutClick: () -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val description = stringResource(R.string.a11y_settings_picker)
+    val description = appString(selectedLanguage, R.string.a11y_settings_picker)
 
     Box(modifier = modifier.semantics { contentDescription = description }) {
         Surface(
@@ -83,17 +84,18 @@ fun AppSettingsPicker(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            MenuHeader(text = stringResource(R.string.sync_info_title))
+            MenuHeader(text = appString(selectedLanguage, R.string.sync_info_title))
             DatabaseStatusSection(
+                language = selectedLanguage,
                 status = apiConnectionStatus,
                 syncMessage = syncMessage
             )
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 6.dp))
 
-            MenuHeader(text = stringResource(R.string.settings_theme_title))
+            MenuHeader(text = appString(selectedLanguage, R.string.settings_theme_title))
             ThemeItem(
-                label = stringResource(R.string.theme_system),
+                label = appString(selectedLanguage, R.string.theme_system),
                 icon = Icons.Default.PhoneAndroid,
                 selected = selectedTheme == AppThemeMode.SYSTEM,
                 onClick = {
@@ -102,7 +104,7 @@ fun AppSettingsPicker(
                 }
             )
             ThemeItem(
-                label = stringResource(R.string.theme_light),
+                label = appString(selectedLanguage, R.string.theme_light),
                 icon = Icons.Default.WbSunny,
                 selected = selectedTheme == AppThemeMode.LIGHT,
                 onClick = {
@@ -111,7 +113,7 @@ fun AppSettingsPicker(
                 }
             )
             ThemeItem(
-                label = stringResource(R.string.theme_dark),
+                label = appString(selectedLanguage, R.string.theme_dark),
                 icon = Icons.Default.DarkMode,
                 selected = selectedTheme == AppThemeMode.DARK,
                 onClick = {
@@ -122,9 +124,9 @@ fun AppSettingsPicker(
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 6.dp))
 
-            MenuHeader(text = stringResource(R.string.settings_language_title))
+            MenuHeader(text = appString(selectedLanguage, R.string.settings_language_title))
             LanguageItem(
-                label = stringResource(R.string.language_system),
+                label = appString(selectedLanguage, R.string.language_system),
                 short = "SYS",
                 selected = selectedLanguage == AppLanguage.SYSTEM,
                 onClick = {
@@ -133,7 +135,7 @@ fun AppSettingsPicker(
                 }
             )
             LanguageItem(
-                label = stringResource(R.string.language_turkish),
+                label = appString(selectedLanguage, R.string.language_turkish),
                 short = "TR",
                 selected = selectedLanguage == AppLanguage.TURKISH,
                 onClick = {
@@ -142,7 +144,7 @@ fun AppSettingsPicker(
                 }
             )
             LanguageItem(
-                label = stringResource(R.string.language_english),
+                label = appString(selectedLanguage, R.string.language_english),
                 short = "EN",
                 selected = selectedLanguage == AppLanguage.ENGLISH,
                 onClick = {
@@ -153,7 +155,7 @@ fun AppSettingsPicker(
 
             HorizontalDivider(modifier = Modifier.padding(vertical = 6.dp))
 
-            MenuHeader(text = stringResource(R.string.about_section_what_title))
+            MenuHeader(text = appString(selectedLanguage, R.string.about_section_what_title))
             DropdownMenuItem(
                 leadingIcon = {
                     Icon(
@@ -165,7 +167,7 @@ fun AppSettingsPicker(
                 },
                 text = {
                     Text(
-                        text = stringResource(R.string.about_dialog_title),
+                        text = appString(selectedLanguage, R.string.about_dialog_title),
                         fontWeight = FontWeight.SemiBold
                     )
                 },
@@ -180,10 +182,11 @@ fun AppSettingsPicker(
 
 @Composable
 private fun DatabaseStatusSection(
+    language: AppLanguage,
     status: ApiConnectionStatus,
     syncMessage: UiText?
 ) {
-    val label = apiStatusLabel(status)
+    val label = apiStatusLabel(language, status)
     val dotColor = apiStatusColor(status)
 
     Column(
@@ -209,7 +212,7 @@ private fun DatabaseStatusSection(
 
         syncMessage?.let { message ->
             Text(
-                text = message.asString(),
+                text = message.asString(language),
                 modifier = Modifier.padding(top = 6.dp),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -220,12 +223,12 @@ private fun DatabaseStatusSection(
 }
 
 @Composable
-private fun apiStatusLabel(status: ApiConnectionStatus): String {
+private fun apiStatusLabel(language: AppLanguage, status: ApiConnectionStatus): String {
     return when (status) {
-        ApiConnectionStatus.CHECKING -> stringResource(R.string.api_status_checking)
-        ApiConnectionStatus.ONLINE -> stringResource(R.string.api_status_online)
-        ApiConnectionStatus.LOCAL -> stringResource(R.string.api_status_local)
-        ApiConnectionStatus.OFFLINE -> stringResource(R.string.api_status_offline)
+        ApiConnectionStatus.CHECKING -> appString(language, R.string.api_status_checking)
+        ApiConnectionStatus.ONLINE -> appString(language, R.string.api_status_online)
+        ApiConnectionStatus.LOCAL -> appString(language, R.string.api_status_local)
+        ApiConnectionStatus.OFFLINE -> appString(language, R.string.api_status_offline)
     }
 }
 
@@ -235,6 +238,31 @@ private fun apiStatusColor(status: ApiConnectionStatus): Color {
         ApiConnectionStatus.ONLINE -> Color(0xFF2ECC71)
         ApiConnectionStatus.LOCAL -> Color(0xFF42A5F5)
         ApiConnectionStatus.OFFLINE -> Color(0xFFE74C3C)
+    }
+}
+
+@Composable
+private fun appString(
+    language: AppLanguage,
+    @StringRes resId: Int,
+    vararg args: Any
+): String {
+    val baseContext = LocalContext.current
+    val localizedContext = remember(baseContext, language) {
+        baseContext.withAppLanguage(language)
+    }
+    return if (args.isEmpty()) {
+        localizedContext.getString(resId)
+    } else {
+        localizedContext.getString(resId, *args)
+    }
+}
+
+@Composable
+private fun UiText.asString(language: AppLanguage): String {
+    return when (this) {
+        is UiText.Dynamic -> value
+        is UiText.Resource -> appString(language, resId, *args.toTypedArray())
     }
 }
 
