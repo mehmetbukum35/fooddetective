@@ -9,13 +9,13 @@ import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -29,12 +29,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -70,7 +65,6 @@ import com.mehmetbukum.fooddetective.ocr.TextRecognizerHelper
 import com.mehmetbukum.fooddetective.ui.components.AboutGuideDialog
 import com.mehmetbukum.fooddetective.ui.components.AppSettingsPicker
 import com.mehmetbukum.fooddetective.ui.components.ErrorCard
-import com.mehmetbukum.fooddetective.ui.components.InfoCard
 import com.mehmetbukum.fooddetective.ui.components.LoadingState
 import com.mehmetbukum.fooddetective.ui.components.NotFoundText
 import com.mehmetbukum.fooddetective.ui.components.PremiumHeader
@@ -252,27 +246,16 @@ fun FoodDetectiveContent(
         PremiumHeader(
             trailing = {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(
-                        onClick = { showAboutGuide = true },
-                        modifier = Modifier.size(34.dp),
-                        colors = IconButtonDefaults.iconButtonColors(
-                            containerColor = Color.White.copy(alpha = 0.18f),
-                            contentColor = Color.White
-                        )
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Info,
-                            contentDescription = stringResource(R.string.about_button_content_description)
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
                     ApiConnectionIndicator(status = state.apiConnectionStatus)
                     Spacer(modifier = Modifier.width(8.dp))
                     AppSettingsPicker(
                         selectedTheme = selectedTheme,
                         selectedLanguage = selectedLanguage,
                         onThemeSelected = onThemeSelected,
-                        onLanguageSelected = onLanguageSelected
+                        onLanguageSelected = onLanguageSelected,
+                        apiConnectionStatus = state.apiConnectionStatus,
+                        syncMessage = state.syncMessage,
+                        onAboutClick = { showAboutGuide = true }
                     )
                 }
             }
@@ -334,14 +317,6 @@ fun FoodDetectiveContent(
                     )
                 }
             }
-        }
-
-        state.syncMessage?.let { message ->
-            InfoCard(
-                title = stringResource(R.string.sync_info_title),
-                message = message.asString(),
-                modifier = Modifier.padding(start = 20.dp, top = 16.dp, end = 20.dp)
-            )
         }
     }
 }
