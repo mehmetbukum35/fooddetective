@@ -1,0 +1,9 @@
+<resources>
+    <string name="sync_skip_remote_source_missing">The remote data source is not configured.</string>
+    <string name="sync_skip_empty_remote_list">The server returned an empty list, so the local database was kept.</string>
+    <string name="sync_skip_inconsistent_count">The server record count was inconsistent. Expected: %1$d, downloaded: %2$d.</string>
+    <string name="sync_skip_blank_code_rows">The server returned %1$d row(s) with a blank additive code.</string>
+    <string name="sync_skip_duplicate_codes">The server returned duplicate additive code(s): %1$s.</string>
+    <string name="sync_error_unexpected">An unexpected remote database synchronization error occurred.</string>
+    <string name="sync_error_unexpected_with_detail">An unexpected remote database synchronization error occurred. Details: %1$s</string>
+</resources>
