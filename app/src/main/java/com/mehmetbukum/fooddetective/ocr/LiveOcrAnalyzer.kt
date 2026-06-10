@@ -20,7 +20,7 @@ class LiveOcrAnalyzer(
     private var lastRunMillis = 0L
     private var lastCodesKey = ""
 
-    @OptIn(ExperimentalGetImage::class)
+    @ExperimentalGetImage
     override fun analyze(imageProxy: ImageProxy) {
         if (!isEnabled()) {
             imageProxy.close()
