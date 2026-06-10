@@ -24,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
@@ -309,14 +310,18 @@ private fun OcrHelpCard(
             ) {
                 Button(
                     onClick = onRetryCamera,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag("ocr_retry_camera"),
                     shape = RoundedCornerShape(15.dp)
                 ) {
                     Text(stringResource(R.string.button_scan_again), fontWeight = FontWeight.Bold)
                 }
                 OutlinedButton(
                     onClick = onRetryGallery,
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier
+                        .weight(1f)
+                        .testTag("ocr_retry_gallery"),
                     shape = RoundedCornerShape(15.dp)
                 ) {
                     Text(

@@ -5,8 +5,10 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.hasContentDescription
 import androidx.compose.ui.test.hasSetTextAction
 import androidx.compose.ui.test.junit4.createComposeRule
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.core.app.ApplicationProvider
 import com.mehmetbukum.fooddetective.data.Additive
@@ -31,8 +33,8 @@ class FoodDetectiveContentTest {
 
         composeRule.onNodeWithText(text(R.string.header_label)).assertIsDisplayed()
         composeRule.onNodeWithText(text(R.string.header_title)).assertIsDisplayed()
-        composeRule.onNodeWithText(text(R.string.button_camera)).assertIsDisplayed()
-        composeRule.onNodeWithText(text(R.string.button_gallery)).assertIsDisplayed()
+        composeRule.onNodeWithText(text(R.string.button_scan_label)).assertIsDisplayed()
+        composeRule.onNodeWithText(text(R.string.button_choose_label_photo)).assertIsDisplayed()
         composeRule.onNodeWithText(text(R.string.label_popular)).assertIsDisplayed()
     }
 
@@ -72,7 +74,7 @@ class FoodDetectiveContentTest {
         setContent(darkTheme = true)
 
         composeRule.onNodeWithText(text(R.string.header_title)).assertIsDisplayed()
-        composeRule.onNodeWithText(text(R.string.button_camera)).assertIsDisplayed()
+        composeRule.onNodeWithText(text(R.string.button_scan_label)).assertIsDisplayed()
         composeRule.onNode(hasSetTextAction()).assertIsDisplayed()
     }
 
@@ -159,15 +161,22 @@ class FoodDetectiveContentTest {
             onRetryGallery = { retryGalleryClicked = true }
         )
 
-        composeRule.onNodeWithText(context.getString(R.string.ocr_summary, 0, 0))
-            .assertIsDisplayed()
+        composeRule.onNode(
+            hasContentDescription(context.getString(R.string.ocr_summary, 0, 0))
+        ).assertIsDisplayed()
+        composeRule.onNodeWithText(text(R.string.ocr_result_title)).assertIsDisplayed()
+        composeRule.onNodeWithText(text(R.string.ocr_stat_detected)).assertIsDisplayed()
+        composeRule.onNodeWithText(text(R.string.ocr_stat_found)).assertIsDisplayed()
+        composeRule.onNodeWithText(text(R.string.ocr_stat_not_found)).assertIsDisplayed()
         composeRule.onNodeWithText(text(R.string.ocr_unreadable_title)).assertIsDisplayed()
 
-        composeRule.onNodeWithText(text(R.string.button_scan_again)).performClick()
-        composeRule.onNodeWithText(text(R.string.button_choose_gallery)).performClick()
+        composeRule.onNodeWithTag("ocr_retry_camera").performScrollTo().performClick()
+        composeRule.onNodeWithTag("ocr_retry_gallery").performScrollTo().performClick()
 
-        assertTrue(retryCameraClicked)
-        assertTrue(retryGalleryClicked)
+        composeRule.runOnIdle {
+            assertTrue(retryCameraClicked)
+            assertTrue(retryGalleryClicked)
+        }
     }
 
     private fun setContent(
