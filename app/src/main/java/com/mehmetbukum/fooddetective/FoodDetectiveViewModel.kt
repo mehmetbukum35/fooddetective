@@ -8,7 +8,9 @@ import com.mehmetbukum.fooddetective.data.AdditiveDataSource
 import com.mehmetbukum.fooddetective.data.AdditiveRepository
 import com.mehmetbukum.fooddetective.data.AdditivesVersionResponse
 import com.mehmetbukum.fooddetective.data.OcrSearchResult
+import com.mehmetbukum.fooddetective.data.SyncErrorReason
 import com.mehmetbukum.fooddetective.data.SyncResult
+import com.mehmetbukum.fooddetective.data.SyncSkipReason
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -311,13 +313,41 @@ class FoodDetectiveViewModel(
 
             is SyncResult.Skipped -> UiText.Resource(
                 R.string.sync_warning_skipped,
-                listOf(reason)
+                listOf(reason.toUiText())
             )
 
             is SyncResult.Error -> UiText.Resource(
                 R.string.sync_warning_failed,
-                listOf(message)
+                listOf(reason.toUiText())
             )
+        }
+    }
+
+    private fun SyncSkipReason.toUiText(): UiText {
+        return when (this) {
+            SyncSkipReason.RemoteDataSourceMissing -> UiText.Resource(R.string.sync_skip_remote_source_missing)
+            SyncSkipReason.EmptyRemoteList -> UiText.Resource(R.string.sync_skip_empty_remote_list)
+            is SyncSkipReason.InconsistentCount -> UiText.Resource(
+                R.string.sync_skip_inconsistent_count,
+                listOf(expected, actual)
+            )
+            is SyncSkipReason.BlankCodeRows -> UiText.Resource(
+                R.string.sync_skip_blank_code_rows,
+                listOf(count)
+            )
+            is SyncSkipReason.DuplicateCodes -> UiText.Resource(
+                R.string.sync_skip_duplicate_codes,
+                listOf(codes.take(5).joinToString())
+            )
+        }
+    }
+
+    private fun SyncErrorReason.toUiText(): UiText {
+        return when (this) {
+            is SyncErrorReason.Unexpected -> technicalMessage
+                ?.takeIf { it.isNotBlank() }
+                ?.let(UiText::Dynamic)
+                ?: UiText.Resource(R.string.sync_error_unexpected)
         }
     }
 
@@ -340,7 +370,7 @@ class FoodDetectiveViewModel(
 
             is SyncResult.Error -> Log.w(
                 TAG,
-                "Katkı maddesi API senkronizasyonu başarısız; yerel veritabanı kullanılacak: ${syncResult.message}"
+                "Katkı maddesi API senkronizasyonu başarısız; yerel veritabanı kullanılacak: ${syncResult.reason}"
             )
         }
     }
