@@ -1,7 +1,6 @@
 package com.mehmetbukum.fooddetective
 
 import android.content.Context
-import android.content.pm.ApplicationInfo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,10 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.mehmetbukum.fooddetective.data.AdditiveRepository
 import com.mehmetbukum.fooddetective.data.AdditivesVersionResponse
-import com.mehmetbukum.fooddetective.data.AppDatabase
-import com.mehmetbukum.fooddetective.data.remote.AdditivesRemoteFactory
 import com.mehmetbukum.fooddetective.localization.AppLanguage
 import com.mehmetbukum.fooddetective.localization.AppLanguagePreferences
 import com.mehmetbukum.fooddetective.localization.AppLocaleProvider
@@ -36,17 +32,13 @@ class MainActivity : ComponentActivity() {
         installSplashScreen()
         super.onCreate(savedInstanceState)
 
-        val database = AppDatabase.getDatabase(this)
-        val repository = AdditiveRepository(
-            dao = database.additiveDao(),
-            remoteDataSource = AdditivesRemoteFactory.create(isDebuggableApp())
-        )
+        val appContainer = (application as FoodDetectiveApplication).appContainer
         val detectiveViewModel = ViewModelProvider(
             this,
             object : ViewModelProvider.Factory {
                 @Suppress("UNCHECKED_CAST")
                 override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                    return FoodDetectiveViewModel(repository) as T
+                    return appContainer.createFoodDetectiveViewModel() as T
                 }
             }
         )[FoodDetectiveViewModel::class.java]
@@ -133,10 +125,6 @@ class MainActivity : ComponentActivity() {
         val dateText = DateFormat.getDateInstance(DateFormat.MEDIUM, locale).format(date)
         val timeText = DateFormat.getTimeInstance(DateFormat.SHORT, locale).format(date)
         return "$dateText $timeText"
-    }
-
-    private fun isDebuggableApp(): Boolean {
-        return (applicationInfo.flags and ApplicationInfo.FLAG_DEBUGGABLE) != 0
     }
 
     private val syncPreferences by lazy {
