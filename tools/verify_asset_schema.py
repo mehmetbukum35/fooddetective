@@ -7,7 +7,8 @@ Run from the repository root before creating a release build:
 
     python tools/verify_asset_schema.py
 
-This script does not modify the database. It only reports missing columns.
+This script does not modify the database. It only reports missing columns
+or indexes.
 """
 
 from __future__ import annotations
@@ -39,6 +40,10 @@ REQUIRED_COLUMNS = {
     "updated_at",
 }
 
+REQUIRED_UNIQUE_INDEXES = {
+    "index_additives_code": ("code",),
+}
+
 
 def table_exists(connection: sqlite3.Connection, table_name: str) -> bool:
     row = connection.execute(
@@ -53,6 +58,20 @@ def existing_columns(connection: sqlite3.Connection) -> set[str]:
     return {row[1] for row in rows}
 
 
+def existing_unique_indexes(connection: sqlite3.Connection) -> dict[str, tuple[str, ...]]:
+    indexes: dict[str, tuple[str, ...]] = {}
+    for row in connection.execute(f"PRAGMA index_list({TABLE_NAME})").fetchall():
+        name = row[1]
+        is_unique = bool(row[2])
+        if not is_unique:
+            continue
+
+        index_columns = connection.execute(f"PRAGMA index_info({name})").fetchall()
+        indexes[name] = tuple(column_row[2] for column_row in index_columns)
+
+    return indexes
+
+
 def main() -> int:
     if not DATABASE_PATH.exists():
         print(f"ERROR: SQLite asset not found: {DATABASE_PATH}")
@@ -64,6 +83,7 @@ def main() -> int:
             return 1
 
         columns = existing_columns(connection)
+        unique_indexes = existing_unique_indexes(connection)
 
     missing = sorted(REQUIRED_COLUMNS - columns)
     extra = sorted(columns - REQUIRED_COLUMNS)
@@ -75,8 +95,21 @@ def main() -> int:
         print("\nRun: python tools/add_english_columns_to_asset.py")
         return 1
 
+    missing_indexes = {
+        name: columns
+        for name, columns in REQUIRED_UNIQUE_INDEXES.items()
+        if unique_indexes.get(name) != columns
+    }
+
+    if missing_indexes:
+        print("ERROR: Missing unique Additive indexes in bundled asset:")
+        for name, columns in missing_indexes.items():
+            print(f"  - {name} on ({', '.join(columns)})")
+        return 1
+
     print("OK: Bundled SQLite asset contains all Additive columns.")
     print(f"Columns checked: {len(REQUIRED_COLUMNS)}")
+    print(f"Unique indexes checked: {len(REQUIRED_UNIQUE_INDEXES)}")
 
     if extra:
         print("Note: Extra columns are present but harmless:")

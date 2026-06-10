@@ -50,7 +50,7 @@ abstract class AdditiveDao {
     abstract suspend fun getRangeAdditives(): List<Additive>
 
     // API'den gelen kayıtları ekler/günceller.
-    // Mevcut şemada primary key id olduğu için API ve asset id değerleri uyumlu kalmalıdır.
+    // Remote sync sırasında id sıfırlanır; Room yerel id üretir, code unique index'i iş kimliğini korur.
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     abstract suspend fun upsertAll(additives: List<Additive>)
 

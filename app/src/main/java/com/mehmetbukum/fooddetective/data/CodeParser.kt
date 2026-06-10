@@ -20,7 +20,7 @@ object CodeParser {
      * C160, F330, €211 veya çıplak 1105 gibi tahminler yanlış pozitif ürettiği için yakalanmaz.
      */
     private val CODE_REGEX = Regex(
-        pattern = """\bE[\s\-]?(\d{3,4})\s?([A-Z])?(?:\s?\((I{1,3}|IV|V)\))?\b""",
+        pattern = """\bE[\s\-]?(\d{3,4})\s?([A-Z])?(?:\s?\((I{1,3}|IV|V)\))?(?![A-Z0-9])""",
         option = RegexOption.IGNORE_CASE
     )
 
