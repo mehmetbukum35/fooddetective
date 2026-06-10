@@ -84,7 +84,8 @@ class AdditiveRepository(
                 )
             }
 
-            dao.replaceAll(allRows)
+            val localRows = allRows.map { it.copy(id = 0) }
+            dao.replaceAll(localRows)
             SyncResult.Success(
                 updatedCount = allRows.size,
                 version = remoteVersion

@@ -1,10 +1,14 @@
 package com.mehmetbukum.fooddetective.data
 
 import androidx.room.Entity
+import androidx.room.Index
 import androidx.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "additives")
+@Entity(
+    tableName = "additives",
+    indices = [Index(value = ["code"], unique = true)]
+)
 data class Additive(
     @PrimaryKey(autoGenerate = true)
     @SerializedName("id")

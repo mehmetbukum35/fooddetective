@@ -98,7 +98,11 @@ class MainActivity : ComponentActivity() {
     }
 
     private fun shouldCheckSync(): Boolean {
-        return true
+        val lastSyncMillis = syncPreferences.getLong(KEY_LAST_SUCCESSFUL_SYNC_MS, 0L)
+        if (lastSyncMillis <= 0L) return true
+
+        val elapsedMillis = System.currentTimeMillis() - lastSyncMillis
+        return elapsedMillis >= SYNC_CHECK_INTERVAL_MS
     }
 
     private fun markSyncSuccessful(version: AdditivesVersionResponse): String {
@@ -144,5 +148,6 @@ class MainActivity : ComponentActivity() {
         private const val KEY_LAST_SUCCESSFUL_SYNC_MS = "last_successful_sync_ms"
         private const val KEY_LAST_VERSION_HASH = "last_version_hash"
         private const val KEY_LAST_TOTAL_COUNT = "last_total_count"
+        private const val SYNC_CHECK_INTERVAL_MS = 6 * 60 * 60 * 1000L
     }
 }
