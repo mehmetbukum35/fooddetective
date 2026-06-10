@@ -372,7 +372,7 @@ class FoodDetectiveViewModel(
         private const val TAG = "EDetectiveSync"
         private val SYNC_MESSAGES_WITH_TIME = setOf(
             R.string.sync_success_updated_at,
-            R.string.sync_checked_at,
+            R.string.sync_success_checked_at,
             R.string.sync_local_last_updated_at
         )
     }
