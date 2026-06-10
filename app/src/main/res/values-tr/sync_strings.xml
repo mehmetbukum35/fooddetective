@@ -1,0 +1,9 @@
+<resources>
+    <string name="sync_skip_remote_source_missing">Uzak veri kaynağı yapılandırılmamış.</string>
+    <string name="sync_skip_empty_remote_list">Sunucu boş liste döndürdüğü için yerel veritabanı korundu.</string>
+    <string name="sync_skip_inconsistent_count">Sunucu kayıt sayısı tutarsız. Beklenen: %1$d, indirilen: %2$d.</string>
+    <string name="sync_skip_blank_code_rows">Sunucudan kodu boş %1$d kayıt geldi.</string>
+    <string name="sync_skip_duplicate_codes">Sunucudan mükerrer katkı kodu geldi: %1$s.</string>
+    <string name="sync_error_unexpected">Uzak veritabanı senkronizasyonunda beklenmeyen bir hata oluştu.</string>
+    <string name="sync_error_unexpected_with_detail">Uzak veritabanı senkronizasyonunda beklenmeyen bir hata oluştu. Ayrıntı: %1$s</string>
+</resources>
