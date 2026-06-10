@@ -1,5 +1,6 @@
 package com.mehmetbukum.fooddetective.ui.components
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,15 +8,16 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.Language
+import androidx.compose.material.icons.filled.PhoneAndroid
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.WbSunny
-import androidx.compose.material.icons.filled.DarkMode
-import androidx.compose.material.icons.filled.PhoneAndroid
-import androidx.compose.material.icons.filled.Language
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.HorizontalDivider
@@ -30,6 +32,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -38,7 +41,10 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.mehmetbukum.fooddetective.ApiConnectionStatus
 import com.mehmetbukum.fooddetective.R
+import com.mehmetbukum.fooddetective.UiText
+import com.mehmetbukum.fooddetective.asString
 import com.mehmetbukum.fooddetective.localization.AppLanguage
 import com.mehmetbukum.fooddetective.ui.theme.AppThemeMode
 
@@ -48,7 +54,10 @@ fun AppSettingsPicker(
     selectedLanguage: AppLanguage,
     onThemeSelected: (AppThemeMode) -> Unit,
     onLanguageSelected: (AppLanguage) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    apiConnectionStatus: ApiConnectionStatus = ApiConnectionStatus.CHECKING,
+    syncMessage: UiText? = null,
+    onAboutClick: () -> Unit = {}
 ) {
     var expanded by remember { mutableStateOf(false) }
     val description = stringResource(R.string.a11y_settings_picker)
@@ -56,29 +65,16 @@ fun AppSettingsPicker(
     Box(modifier = modifier.semantics { contentDescription = description }) {
         Surface(
             onClick = { expanded = true },
-            shape = RoundedCornerShape(100.dp),
+            modifier = Modifier.size(40.dp),
+            shape = CircleShape,
             color = Color.White.copy(alpha = 0.22f),
             contentColor = Color.White
         ) {
-            Row(
-                modifier = Modifier.padding(horizontal = 12.dp, vertical = 7.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            Box(contentAlignment = Alignment.Center) {
                 Icon(
                     imageVector = Icons.Default.Settings,
                     contentDescription = null,
-                    modifier = Modifier.size(16.dp)
-                )
-                Spacer(Modifier.width(6.dp))
-                Text(
-                    text = stringResource(R.string.settings_short_label),
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Black
-                )
-                Icon(
-                    imageVector = Icons.Default.ArrowDropDown,
-                    contentDescription = null,
-                    modifier = Modifier.size(18.dp)
+                    modifier = Modifier.size(19.dp)
                 )
             }
         }
@@ -87,6 +83,14 @@ fun AppSettingsPicker(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
+            MenuHeader(text = stringResource(R.string.sync_info_title))
+            DatabaseStatusSection(
+                status = apiConnectionStatus,
+                syncMessage = syncMessage
+            )
+
+            HorizontalDivider(modifier = Modifier.padding(vertical = 6.dp))
+
             MenuHeader(text = stringResource(R.string.settings_theme_title))
             ThemeItem(
                 label = stringResource(R.string.theme_system),
@@ -146,7 +150,91 @@ fun AppSettingsPicker(
                     expanded = false
                 }
             )
+
+            HorizontalDivider(modifier = Modifier.padding(vertical = 6.dp))
+
+            MenuHeader(text = stringResource(R.string.about_section_what_title))
+            DropdownMenuItem(
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Default.Info,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.size(18.dp)
+                    )
+                },
+                text = {
+                    Text(
+                        text = stringResource(R.string.about_dialog_title),
+                        fontWeight = FontWeight.SemiBold
+                    )
+                },
+                onClick = {
+                    expanded = false
+                    onAboutClick()
+                }
+            )
         }
+    }
+}
+
+@Composable
+private fun DatabaseStatusSection(
+    status: ApiConnectionStatus,
+    syncMessage: UiText?
+) {
+    val label = apiStatusLabel(status)
+    val dotColor = apiStatusColor(status)
+
+    Column(
+        modifier = Modifier
+            .padding(horizontal = 16.dp, vertical = 6.dp)
+            .width(280.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Box(
+                modifier = Modifier
+                    .size(10.dp)
+                    .clip(CircleShape)
+                    .background(dotColor)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+                text = label,
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Black,
+                color = MaterialTheme.colorScheme.onSurface
+            )
+        }
+
+        syncMessage?.let { message ->
+            Text(
+                text = message.asString(),
+                modifier = Modifier.padding(top = 6.dp),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                lineHeight = 17.sp
+            )
+        }
+    }
+}
+
+@Composable
+private fun apiStatusLabel(status: ApiConnectionStatus): String {
+    return when (status) {
+        ApiConnectionStatus.CHECKING -> stringResource(R.string.api_status_checking)
+        ApiConnectionStatus.ONLINE -> stringResource(R.string.api_status_online)
+        ApiConnectionStatus.LOCAL -> stringResource(R.string.api_status_local)
+        ApiConnectionStatus.OFFLINE -> stringResource(R.string.api_status_offline)
+    }
+}
+
+private fun apiStatusColor(status: ApiConnectionStatus): Color {
+    return when (status) {
+        ApiConnectionStatus.CHECKING -> Color(0xFFFFC107)
+        ApiConnectionStatus.ONLINE -> Color(0xFF2ECC71)
+        ApiConnectionStatus.LOCAL -> Color(0xFF42A5F5)
+        ApiConnectionStatus.OFFLINE -> Color(0xFFE74C3C)
     }
 }
 
