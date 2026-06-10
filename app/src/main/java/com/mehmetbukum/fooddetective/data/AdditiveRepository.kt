@@ -39,7 +39,7 @@ class AdditiveRepository(
      * yerel offline veritabanı korunur.
      */
     suspend fun syncFromApi(lastSuccessfulVersionHash: String?): SyncResult {
-        val remote = remoteDataSource ?: return SyncResult.Skipped("Uzak veri kaynağı tanımlı değil.")
+        val remote = remoteDataSource ?: return SyncResult.Skipped(SyncSkipReason.RemoteDataSourceMissing)
 
         return try {
             val remoteVersion = remote.getVersion()
@@ -54,34 +54,32 @@ class AdditiveRepository(
             val allRows = remote.getAllAdditives()
 
             if (allRows.isEmpty()) {
-                return SyncResult.Skipped("Sunucu boş liste döndürdü; yerel veritabanı korundu.")
+                return SyncResult.Skipped(SyncSkipReason.EmptyRemoteList)
             }
 
             val expectedCount = remoteVersion.total_count
             if (expectedCount > 0 && allRows.size < expectedCount) {
                 return SyncResult.Skipped(
-                    "Sunucu kayıt sayısı tutarsız; yerel veritabanı korundu. " +
-                        "Version kayıt sayısı: $expectedCount, indirilen kayıt sayısı: ${allRows.size}."
+                    SyncSkipReason.InconsistentCount(
+                        expected = expectedCount,
+                        actual = allRows.size
+                    )
                 )
             }
 
             val blankCodeCount = allRows.count { it.code.isBlank() }
             if (blankCodeCount > 0) {
-                return SyncResult.Skipped(
-                    "Sunucudan kodu boş $blankCodeCount kayıt geldi; yerel veritabanı korundu."
-                )
+                return SyncResult.Skipped(SyncSkipReason.BlankCodeRows(blankCodeCount))
             }
 
             val duplicateCodes = allRows
                 .groupBy { it.code.trim().uppercase(Locale.ROOT) }
                 .filterValues { rows -> rows.size > 1 }
                 .keys
+                .toList()
 
             if (duplicateCodes.isNotEmpty()) {
-                return SyncResult.Skipped(
-                    "Sunucudan mükerrer kod geldi; yerel veritabanı korundu: " +
-                        duplicateCodes.take(5).joinToString()
-                )
+                return SyncResult.Skipped(SyncSkipReason.DuplicateCodes(duplicateCodes))
             }
 
             val localRows = allRows.map { it.copy(id = 0) }
@@ -91,7 +89,7 @@ class AdditiveRepository(
                 version = remoteVersion
             )
         } catch (e: Exception) {
-            SyncResult.Error(e.localizedMessage ?: "Uzak veritabanı senkronizasyon hatası")
+            SyncResult.Error(SyncErrorReason.Unexpected(e.localizedMessage))
         }
     }
 
@@ -318,6 +316,18 @@ sealed class SyncResult {
         val version: AdditivesVersionResponse
     ) : SyncResult()
 
-    data class Skipped(val reason: String) : SyncResult()
-    data class Error(val message: String) : SyncResult()
+    data class Skipped(val reason: SyncSkipReason) : SyncResult()
+    data class Error(val reason: SyncErrorReason) : SyncResult()
+}
+
+sealed class SyncSkipReason {
+    data object RemoteDataSourceMissing : SyncSkipReason()
+    data object EmptyRemoteList : SyncSkipReason()
+    data class InconsistentCount(val expected: Int, val actual: Int) : SyncSkipReason()
+    data class BlankCodeRows(val count: Int) : SyncSkipReason()
+    data class DuplicateCodes(val codes: List<String>) : SyncSkipReason()
+}
+
+sealed class SyncErrorReason {
+    data class Unexpected(val technicalMessage: String?) : SyncErrorReason()
 }
