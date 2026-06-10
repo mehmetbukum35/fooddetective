@@ -311,15 +311,8 @@ class FoodDetectiveViewModel(
                 UiText.Resource(R.string.sync_success_checked_at, listOf(syncText))
             }
 
-            is SyncResult.Skipped -> UiText.Resource(
-                R.string.sync_warning_skipped,
-                listOf(reason.toUiText())
-            )
-
-            is SyncResult.Error -> UiText.Resource(
-                R.string.sync_warning_failed,
-                listOf(reason.toUiText())
-            )
+            is SyncResult.Skipped -> reason.toUiText()
+            is SyncResult.Error -> reason.toUiText()
         }
     }
 
@@ -346,7 +339,7 @@ class FoodDetectiveViewModel(
         return when (this) {
             is SyncErrorReason.Unexpected -> technicalMessage
                 ?.takeIf { it.isNotBlank() }
-                ?.let(UiText::Dynamic)
+                ?.let { UiText.Resource(R.string.sync_error_unexpected_with_detail, listOf(it)) }
                 ?: UiText.Resource(R.string.sync_error_unexpected)
         }
     }
@@ -379,7 +372,7 @@ class FoodDetectiveViewModel(
         private const val TAG = "EDetectiveSync"
         private val SYNC_MESSAGES_WITH_TIME = setOf(
             R.string.sync_success_updated_at,
-            R.string.sync_success_checked_at,
+            R.string.sync_checked_at,
             R.string.sync_local_last_updated_at
         )
     }
