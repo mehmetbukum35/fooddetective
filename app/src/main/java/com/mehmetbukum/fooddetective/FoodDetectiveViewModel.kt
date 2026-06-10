@@ -8,9 +8,7 @@ import com.mehmetbukum.fooddetective.data.AdditiveDataSource
 import com.mehmetbukum.fooddetective.data.AdditiveRepository
 import com.mehmetbukum.fooddetective.data.AdditivesVersionResponse
 import com.mehmetbukum.fooddetective.data.OcrSearchResult
-import com.mehmetbukum.fooddetective.data.SyncErrorReason
 import com.mehmetbukum.fooddetective.data.SyncResult
-import com.mehmetbukum.fooddetective.data.SyncSkipReason
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -126,7 +124,7 @@ class FoodDetectiveViewModel(
             _uiState.update {
                 it.copy(
                     apiConnectionStatus = syncResult.toApiConnectionStatus(),
-                    syncMessage = syncResult.toUserMessage(successfulSyncText)
+                    syncMessage = SyncMessageMapper.toUserMessage(syncResult, successfulSyncText)
                 )
             }
         }
@@ -298,49 +296,6 @@ class FoodDetectiveViewModel(
 
             is SyncResult.Error,
             is SyncResult.Skipped -> ApiConnectionStatus.OFFLINE
-        }
-    }
-
-    private fun SyncResult.toUserMessage(successfulSyncText: String?): UiText? {
-        return when (this) {
-            is SyncResult.Success -> successfulSyncText?.let { syncText ->
-                UiText.Resource(R.string.sync_success_updated_at, listOf(syncText))
-            }
-
-            is SyncResult.NoChange -> successfulSyncText?.let { syncText ->
-                UiText.Resource(R.string.sync_success_checked_at, listOf(syncText))
-            }
-
-            is SyncResult.Skipped -> reason.toUiText()
-            is SyncResult.Error -> reason.toUiText()
-        }
-    }
-
-    private fun SyncSkipReason.toUiText(): UiText {
-        return when (this) {
-            SyncSkipReason.RemoteDataSourceMissing -> UiText.Resource(R.string.sync_skip_remote_source_missing)
-            SyncSkipReason.EmptyRemoteList -> UiText.Resource(R.string.sync_skip_empty_remote_list)
-            is SyncSkipReason.InconsistentCount -> UiText.Resource(
-                R.string.sync_skip_inconsistent_count,
-                listOf(expected, actual)
-            )
-            is SyncSkipReason.BlankCodeRows -> UiText.Resource(
-                R.string.sync_skip_blank_code_rows,
-                listOf(count)
-            )
-            is SyncSkipReason.DuplicateCodes -> UiText.Resource(
-                R.string.sync_skip_duplicate_codes,
-                listOf(codes.take(5).joinToString())
-            )
-        }
-    }
-
-    private fun SyncErrorReason.toUiText(): UiText {
-        return when (this) {
-            is SyncErrorReason.Unexpected -> technicalMessage
-                ?.takeIf { it.isNotBlank() }
-                ?.let { UiText.Resource(R.string.sync_error_unexpected_with_detail, listOf(it)) }
-                ?: UiText.Resource(R.string.sync_error_unexpected)
         }
     }
 
