@@ -90,7 +90,7 @@ jobs:
       - name: Run Compose UI tests on emulator
         uses: reactivecircus/android-emulator-runner@v2
         with:
-          api-level: 35
+          api-level: 34
           arch: x86_64
           target: google_apis
           profile: pixel_6
