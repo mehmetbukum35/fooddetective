@@ -102,8 +102,7 @@ fun ResultCard(additive: Additive, modifier: Modifier = Modifier) {
                 riskLevel = riskLevel,
                 riskLabel = riskLabel,
                 riskColor = riskColor,
-                isDarkTheme = isDarkTheme,
-                isEnglish = isEnglish
+                isDarkTheme = isDarkTheme
             )
 
             HorizontalDivider(
@@ -140,8 +139,7 @@ private fun ResultHeroHeader(
     riskLevel: RiskLevel,
     riskLabel: String,
     riskColor: Color,
-    isDarkTheme: Boolean,
-    isEnglish: Boolean
+    isDarkTheme: Boolean
 ) {
     var showRiskInfo by remember { mutableStateOf(false) }
     val heroBackground = if (isDarkTheme) {
@@ -151,10 +149,7 @@ private fun ResultHeroHeader(
     }
 
     if (showRiskInfo) {
-        RiskInfoDialog(
-            isEnglish = isEnglish,
-            onDismiss = { showRiskInfo = false }
-        )
+        RiskInfoDialog(onDismiss = { showRiskInfo = false })
     }
 
     Card(
@@ -233,35 +228,24 @@ private fun ResultHeroHeader(
 }
 
 @Composable
-private fun RiskInfoDialog(
-    isEnglish: Boolean,
-    onDismiss: () -> Unit
-) {
-    val title = if (isEnglish) "How is the risk level estimated?" else stringResource(R.string.risk_info_title)
-    val body = if (isEnglish) {
-        "The risk bars summarize the available database notes for this additive. They are only a quick guide. Please also check the product label and reliable sources when needed."
-    } else {
-        stringResource(R.string.risk_info_body)
-    }
-    val closeText = if (isEnglish) "Got it" else stringResource(R.string.about_dialog_close)
-
+private fun RiskInfoDialog(onDismiss: () -> Unit) {
     AlertDialog(
         onDismissRequest = onDismiss,
         title = {
             Text(
-                text = title,
+                text = stringResource(R.string.risk_info_title),
                 fontWeight = FontWeight.Black
             )
         },
         text = {
             Text(
-                text = body,
+                text = stringResource(R.string.risk_info_body),
                 lineHeight = 21.sp
             )
         },
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text(closeText)
+                Text(stringResource(R.string.about_dialog_close))
             }
         }
     )
@@ -387,7 +371,8 @@ private fun InfoBox(
     Card(
         modifier = modifier,
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = background)
+        colors = CardDefaults.cardColors(containerColor = background),
+        elevation = CardDefaults.cardElevation(defaultElevation = 0.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth()) {
             if (sideColor != null) {
