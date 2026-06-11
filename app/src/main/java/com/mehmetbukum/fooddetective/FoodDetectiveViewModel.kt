@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.mehmetbukum.fooddetective.data.Additive
 import com.mehmetbukum.fooddetective.data.AdditiveDataSource
-import com.mehmetbukum.fooddetective.data.AdditiveRepository
+import com.mehmetbukum.fooddetective.data.AdditiveSyncDataSource
 import com.mehmetbukum.fooddetective.data.AdditivesVersionResponse
 import com.mehmetbukum.fooddetective.data.OcrSearchResult
 import com.mehmetbukum.fooddetective.data.SyncResult
@@ -42,7 +42,7 @@ data class FoodDetectiveUiState(
 
 class FoodDetectiveViewModel(
     private val repository: AdditiveDataSource,
-    private val syncRepository: AdditiveRepository? = repository as? AdditiveRepository,
+    private val syncDataSource: AdditiveSyncDataSource? = null,
     private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
     private val suggestionDelayMillis: Long = 220L
 ) : ViewModel() {
@@ -89,8 +89,8 @@ class FoodDetectiveViewModel(
             return
         }
 
-        val remoteSyncRepository = syncRepository
-        if (remoteSyncRepository == null) {
+        val syncSource = syncDataSource
+        if (syncSource == null) {
             _uiState.update {
                 it.copy(
                     apiConnectionStatus = ApiConnectionStatus.OFFLINE,
@@ -110,7 +110,7 @@ class FoodDetectiveViewModel(
 
         syncJob = viewModelScope.launch {
             val syncResult = withContext(ioDispatcher) {
-                remoteSyncRepository.syncFromApi(lastSuccessfulVersionHash = lastSuccessfulVersionHash)
+                syncSource.syncFromApi(lastSuccessfulVersionHash = lastSuccessfulVersionHash)
             }
             logSyncResult(syncResult)
 
