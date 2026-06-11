@@ -55,6 +55,7 @@ jobs:
   instrumented-tests:
     name: Instrumented UI Tests
     runs-on: ubuntu-latest
+    needs: build
 
     steps:
       - name: Check out repository
