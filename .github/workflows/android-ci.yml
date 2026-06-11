@@ -95,6 +95,7 @@ jobs:
           target: google_apis
           profile: pixel_6
           disable-animations: true
+          emulator-options: -no-snapshot-save -noaudio -no-boot-anim -memory 2048 -cores 2
           script: ./gradlew connectedDebugAndroidTest --stacktrace
 
       - name: Upload instrumented test reports
