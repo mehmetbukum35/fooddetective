@@ -3,13 +3,23 @@ package com.mehmetbukum.fooddetective.data
 import java.util.Locale
 
 /**
- * ViewModel'in Room'a doğrudan bağımlı kalmaması için ortak veri erişim sözleşmesi.
+ * ViewModel'in Room'a doğrudan bağımlı kalmaması için ortak arama veri erişim sözleşmesi.
  * Unit testlerde fake implementasyon kullanılabilir.
  */
 interface AdditiveDataSource {
     suspend fun searchSingle(query: String): Additive?
     suspend fun searchSuggestions(query: String, limit: Int = 20): List<Additive>
     suspend fun searchFromOcr(rawText: String): OcrSearchResult
+}
+
+/**
+ * Katkı maddesi veritabanı senkronizasyonu için ayrı sözleşme.
+ *
+ * ViewModel bu interface sayesinde concrete AdditiveRepository tipine veya cast işlemine
+ * ihtiyaç duymadan senkronizasyon başlatabilir.
+ */
+interface AdditiveSyncDataSource {
+    suspend fun syncFromApi(lastSuccessfulVersionHash: String?): SyncResult
 }
 
 interface AdditivesRemoteDataSource {
@@ -19,13 +29,13 @@ interface AdditivesRemoteDataSource {
 }
 
 /**
- * OCR / manuel arama mantığını tek bir yerde toplar.
- * MainActivity sadece bu sınıfı çağırır; SQL detaylarıyla ilgilenmez.
+ * OCR / manuel arama ve API senkronizasyon mantığını tek bir yerde toplar.
+ * ViewModel sadece interface'lere bağımlı kalır; SQL ve Retrofit detaylarıyla ilgilenmez.
  */
 class AdditiveRepository(
     private val dao: AdditiveDao,
     private val remoteDataSource: AdditivesRemoteDataSource? = null
-) : AdditiveDataSource {
+) : AdditiveDataSource, AdditiveSyncDataSource {
 
     /**
      * Online iken sunucu veritabanı ana kaynak kabul edilir.
@@ -38,7 +48,7 @@ class AdditiveRepository(
      * Sunucuya ulaşılamazsa, API boş/eksik liste döndürürse veya veri tutarsızsa
      * yerel offline veritabanı korunur.
      */
-    suspend fun syncFromApi(lastSuccessfulVersionHash: String?): SyncResult {
+    override suspend fun syncFromApi(lastSuccessfulVersionHash: String?): SyncResult {
         val remote = remoteDataSource ?: return SyncResult.Skipped(SyncSkipReason.RemoteDataSourceMissing)
 
         return try {
