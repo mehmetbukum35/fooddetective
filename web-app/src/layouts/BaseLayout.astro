@@ -4,9 +4,9 @@ import '../styles/global.css';
 const {
   title = 'Food Label Detective',
   description = 'Scan food labels, detect E-codes, and review additive information such as halal status, risk level, and health notes.',
-  lang = 'tr',
+  lang = 'en',
   active = 'home',
-  alternateUrl = '/app/en/'
+  alternateUrl = '/app/tr/'
 } = Astro.props;
 
 const nav = lang === 'tr'
@@ -27,7 +27,8 @@ const nav = lang === 'tr'
       footer: 'Food Label Detective is an independent information tool built to make food labels easier to understand.'
     };
 
-const prefix = lang === 'tr' ? '/app' : '/app/en';
+const prefix = lang === 'tr' ? '/app/tr' : '/app';
+const homeHref = lang === 'tr' ? '/app/tr/' : '/app/';
 ---
 <!doctype html>
 <html lang={lang}>
@@ -48,7 +49,7 @@ const prefix = lang === 'tr' ? '/app' : '/app/en';
   <body>
     <div class="site-shell">
       <nav class="nav" aria-label="Main navigation">
-        <a class="brand" href={lang === 'tr' ? '/app/' : '/app/en/'} aria-label="Food Label Detective home">
+        <a class="brand" href={homeHref} aria-label="Food Label Detective home">
           <span class="brand-mark">FD</span>
           <span>Food Label Detective</span>
         </a>
