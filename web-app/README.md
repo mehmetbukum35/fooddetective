@@ -6,7 +6,8 @@ This is the public static website for the Android app landing pages, privacy pol
 
 - Astro
 - Static output
-- Turkish and English pages
+- English-first public website
+- Optional Turkish pages under `/tr`
 - Built for deployment under `/app`
 
 ## Local development
@@ -38,13 +39,22 @@ https://foodlabeldetective.com.tr/app/
 
 ## Public URLs
 
+Default English pages:
+
 ```text
 https://foodlabeldetective.com.tr/app/
-https://foodlabeldetective.com.tr/app/en/
 https://foodlabeldetective.com.tr/app/privacy-policy/
-https://foodlabeldetective.com.tr/app/en/privacy-policy/
 https://foodlabeldetective.com.tr/app/support/
-https://foodlabeldetective.com.tr/app/en/support/
 https://foodlabeldetective.com.tr/app/terms/
-https://foodlabeldetective.com.tr/app/en/terms/
 ```
+
+Optional Turkish pages:
+
+```text
+https://foodlabeldetective.com.tr/app/tr/
+https://foodlabeldetective.com.tr/app/tr/privacy-policy/
+https://foodlabeldetective.com.tr/app/tr/support/
+https://foodlabeldetective.com.tr/app/tr/terms/
+```
+
+Legacy English duplicate pages may also exist under `/en` until removed intentionally.
