@@ -5,37 +5,65 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
   lang="tr"
   active="privacy"
   title="Gizlilik Politikası | Food Label Detective"
-  description="Food Label Detective uygulamasının kamera, galeri, OCR, internet ve veri kullanımı hakkında gizlilik politikası."
+  description="Food Label Detective uygulamasının kamera, galeri, OCR, internet, veritabanı senkronizasyonu, veri saklama ve güvenlik kullanımı hakkında gizlilik politikası."
   alternateUrl="/app/privacy-policy/"
 >
   <main class="site-shell policy-hero policy-content">
     <span class="eyebrow">Gizlilik Politikası</span>
     <h1>Fotoğrafı değil, etiketteki bilgiyi okuruz.</h1>
     <p class="lede">Bu politika, Food Label Detective Android uygulamasının hangi izinleri kullandığını, hangi verileri işlediğini ve kullanıcı gizliliğini nasıl koruduğunu açıklar.</p>
-    <p class="notice"><strong>Son güncelleme:</strong> 12 Haziran 2026. Uygulama genel bilgilendirme amacıyla hazırlanmıştır; tıbbi, hukuki veya sertifikasyon kararı vermez.</p>
+    <p class="notice"><strong>Son güncelleme:</strong> 12 Haziran 2026. Uygulama genel bilgilendirme amacıyla hazırlanmıştır; tıbbi, hukuki, helal sertifikasyon veya resmî mevzuat kararı vermez.</p>
 
-    <h2>1. Toplanan ve işlenen bilgiler</h2>
+    <h2>1. Uygulama bilgileri</h2>
+    <p><strong>Uygulama adı:</strong> Food Label Detective</p>
+    <p><strong>Geliştirici:</strong> Mehmet Büküm</p>
+    <p><strong>İletişim:</strong> <a href="mailto:mehmetbkm@gmail.com">mehmetbkm@gmail.com</a></p>
+
+    <h2>2. İşlenen bilgiler</h2>
     <p>Food Label Detective, gıda etiketi üzerindeki E-kodlarını ve katkı maddesi adlarını tespit etmeye yardımcı olur. Kamera ile çekilen veya galeriden seçilen etiket görselleri yalnızca cihaz üzerinde OCR işlemi için kullanılır.</p>
+    <p>Uygulama kullanıcı kaydı veya giriş işlemi gerektirmez.</p>
 
-    <h2>2. Kamera ve galeri kullanımı</h2>
-    <p>Kamera izni, ürün etiketinin fotoğrafını çekmek ve OCR işlemiyle metin okumak için kullanılır. Galeriden seçilen görseller de aynı amaçla işlenir. Etiket görselleri uygulama tarafından uzak bir sunucuya yüklenmez.</p>
+    <h2>3. Kamera ve galeri kullanımı</h2>
+    <p>Kamera izni, ürün etiketinin fotoğrafını çekmek ve OCR işlemiyle metin okumak için kullanılır. Galeriden seçilen görseller de aynı amaçla işlenir.</p>
+    <p>Etiket görselleri uygulama tarafından uzak bir sunucuya yüklenmez, tarafımızca saklanmaz ve üçüncü taraflarla paylaşılmaz.</p>
 
-    <h2>3. İnternet erişimi</h2>
-    <p>İnternet bağlantısı, katkı maddesi veritabanını güncellemek, canlı veri kaynağına erişmek ve bağlantı durumunu kontrol etmek için kullanılır. Uygulama temel arama işlemlerini cihazda saklanan yerel veritabanıyla sürdürebilir.</p>
+    <h2>4. Cihaz üzerinde OCR teknolojisi</h2>
+    <p>Uygulama, etiket metnini okumak için cihaz üzerinde çalışan metin tanıma teknolojisi kullanabilir. OCR işlemi kullanıcının cihazında gerçekleştirilir. Etiket görselleri uygulama tarafından harici bir OCR sunucusuna gönderilmez.</p>
+    <p>OCR doğruluğu ışık, bulanıklık, çekim açısı, ambalaj yansıması ve etiket kalitesine göre değişebilir.</p>
 
-    <h2>4. Katkı maddesi verileri</h2>
-    <p>Uygulama; katkı kodu, ad, kullanım amacı, helal durumu, sağlık notu, risk seviyesi, açıklama, uyarı ve benzer takma ad alanlarını gösterebilir. Bu bilgiler genel bilgilendirme amaçlıdır.</p>
+    <h2>5. İnternet erişimi</h2>
+    <p>İnternet bağlantısı, katkı maddesi veritabanını güncellemek, canlı veri kaynağına erişmek ve bağlantı durumunu kontrol etmek için kullanılır.</p>
+    <p>Uygulama, katkı maddesi veritabanı kayıtlarını senkronize etmek için kendi API servisiyle iletişim kurabilir. Uygulama temel arama işlemlerini cihazda saklanan yerel veritabanıyla sürdürebilir.</p>
 
-    <h2>5. Paylaşım ve üçüncü taraflar</h2>
-    <p>Uygulama, etiket fotoğraflarını veya OCR için kullanılan görselleri üçüncü taraflarla paylaşmak amacıyla sunucuya göndermez. Veritabanı güncellemeleri için uygulamanın kendi API servisiyle iletişim kurulabilir.</p>
+    <h2>6. Katkı maddesi verileri</h2>
+    <p>Uygulama; katkı kodu, ad, kullanım amacı, helal durumu, sağlık notu, risk seviyesi, açıklama, uyarı ve benzer takma ad alanlarını gösterebilir.</p>
+    <p>Bu bilgiler genel bilgilendirme amaçlıdır.</p>
 
-    <h2>6. Çocukların gizliliği</h2>
-    <p>Uygulama çocuklara yönelik kişisel veri toplama amacı taşımaz. Gıda katkı maddesi bilgileri genel bilgilendirme niteliğindedir.</p>
+    <h2>7. Paylaşım ve üçüncü taraflar</h2>
+    <p>Uygulama, etiket fotoğraflarını veya OCR için kullanılan görselleri üçüncü taraflarla paylaşmak amacıyla sunucuya göndermez.</p>
+    <p>Uygulama kişisel kullanıcı verilerini satmaz.</p>
+    <p>Uygulama, cihaz üzerinde metin tanıma gibi uygulama işlevleri için gerekli üçüncü taraf kütüphaneleri veya Android servislerini kullanabilir. Bunlar yalnızca etiket okuma ve arama özelliklerini sağlamak için kullanılır.</p>
 
-    <h2>7. Kullanıcının dikkat etmesi gerekenler</h2>
+    <h2>8. Veri saklama ve silme</h2>
+    <p>Food Label Detective kullanıcı hesabı oluşturmaz ve etiket fotoğraflarını, galeri görsellerini veya OCR görsel dosyalarını kendi sunucularında saklamaz.</p>
+    <p>Katkı maddesi veritabanı kayıtları, çevrimdışı veya yerel arama yapılabilmesi için kullanıcının cihazında yerel olarak saklanabilir. Kullanıcılar, uygulama verilerini temizleyerek veya uygulamayı cihazlarından kaldırarak yerel olarak saklanan uygulama verilerini silebilir.</p>
+    <p>Gizlilikle ilgili sorular veya silme talepleri için <a href="mailto:mehmetbkm@gmail.com">mehmetbkm@gmail.com</a> adresinden iletişime geçilebilir.</p>
+
+    <h2>9. Güvenlik</h2>
+    <p>Uygulama katkı maddesi kayıtlarını senkronize etmek için API servisiyle iletişim kurduğunda, bağlantı desteklendiği yerlerde güvenli HTTPS üzerinden yapılır.</p>
+    <p>Uygulama etiket fotoğraflarını veya OCR görsellerini API servisine iletmez.</p>
+
+    <h2>10. Çocukların gizliliği</h2>
+    <p>Uygulama çocuklara yönelik değildir ve çocuklardan kişisel veri toplamak üzere tasarlanmamıştır. Gıda katkı maddesi bilgileri genel eğitim ve bilgilendirme niteliğindedir.</p>
+
+    <h2>11. Kullanıcının dikkat etmesi gerekenler</h2>
     <p>OCR hatalı okuyabilir. Nihai karar vermeden önce ürün ambalajı, üretici açıklaması, resmî mevzuat, sertifikasyon kuruluşları ve uzman görüşleri dikkate alınmalıdır.</p>
 
-    <h2>8. İletişim</h2>
+    <h2>12. Sorumluluk reddi</h2>
+    <p>Food Label Detective, gıda etiketlerini daha anlaşılır hâle getirmek için geliştirilmiş bağımsız bir bilgilendirme aracıdır.</p>
+    <p>Uygulamadaki bilgiler ürün etiketi, üretici beyanı, resmî sertifikasyon, tıbbi tavsiye, hukuki tavsiye veya profesyonel uzman görüşünün yerine geçmez.</p>
+
+    <h2>13. İletişim</h2>
     <p>Gizlilik politikası hakkında soru veya düzeltme talepleri için <a href="mailto:mehmetbkm@gmail.com">mehmetbkm@gmail.com</a> adresinden iletişime geçebilirsiniz.</p>
   </main>
 </BaseLayout>
