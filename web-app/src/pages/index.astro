@@ -5,21 +5,27 @@ import PhoneMockup from '../components/PhoneMockup.astro';
 <BaseLayout
   lang="en"
   active="home"
-  title="Food Label Detective | Food Label and E-code Scanner"
-  description="Scan food labels, detect E-codes, and review additive information such as halal status, risk level, and health notes."
+  title="Food Label Detective | Food Additive, Name and E-code Scanner"
+  description="Scan food labels, detect additive names and E-codes, search by code, name, alias or function, and review halal status, risk level, health notes and warnings."
   alternateUrl="/app/tr/"
 >
   <main>
     <section class="site-shell hero">
       <div>
-        <span class="eyebrow">A mobile companion for clearer food labels</span>
-        <h1>Make tiny label codes visible.</h1>
-        <p class="lede">Food Label Detective helps you understand E-codes and food additives on packaged products. Scan a label with the camera, choose a photo from the gallery, or manually search codes such as E330, E120, and E160A.</p>
+        <span class="eyebrow">A smarter companion for food additive labels</span>
+        <h1>Search the label, not just the code.</h1>
+        <p class="lede">Food Label Detective understands more than E-codes. Search by code, additive name, alias, or functional class; scan labels from the camera or gallery; and review clear additive summaries with halal status, risk level, health notes, warnings, and offline support.</p>
         <div class="hero-actions">
-          <a class="button primary" href="#features">Explore features</a>
+          <a class="button primary" href="#features">Explore the engine</a>
           <a class="button secondary" href="/app/privacy-policy/">Read privacy policy</a>
         </div>
-        <p class="hero-note">Label photos are processed on your device for OCR; they are not uploaded to a server.</p>
+        <p class="hero-note">OCR runs on your device. Label photos are used for recognition and are not uploaded by the app.</p>
+        <div class="metric-strip">
+          <div class="metric"><b>Code</b><span>E330, E120, E160A</span></div>
+          <div class="metric"><b>Name</b><span>carmine, citric acid</span></div>
+          <div class="metric"><b>Alias</b><span>alternative additive names</span></div>
+          <div class="metric"><b>Class</b><span>colour, preservative, sweetener</span></div>
+        </div>
       </div>
       <PhoneMockup lang="en" />
     </section>
@@ -27,35 +33,45 @@ import PhoneMockup from '../components/PhoneMockup.astro';
     <section id="features" class="site-shell section">
       <div class="section-head">
         <div>
-          <p class="section-kicker">Features</p>
-          <h2>Search, scan, and understand results.</h2>
+          <p class="section-kicker">What the app actually searches</p>
+          <h2>Code, name, alias and category matching.</h2>
         </div>
-        <p class="section-desc">The app stores an additive database on the device and synchronizes with live server data when available. Basic search can continue even without an internet connection.</p>
+        <p class="section-desc">The search layer combines exact code lookup, prefix suggestions, keyword matching, localized additive names, alias fields and functional classes. It also understands code ranges such as E1400-E1450.</p>
       </div>
       <div class="grid-3">
-        <article class="card"><span class="icon">E</span><strong>E-code search</strong><p>Search codes such as E330, E120, or E621, or type an additive name to see a short description, purpose, and risk signal.</p></article>
-        <article class="card"><span class="icon">⌁</span><strong>Camera and gallery OCR</strong><p>Scan a product label with the camera or choose a photo from the gallery. OCR is not perfect, so manual checking is always supported.</p></article>
-        <article class="card"><span class="icon">✓</span><strong>Halal and risk notes</strong><p>Additives may show halal, doubtful, or not-halal status, plus low, medium, or high risk levels and health warnings when available.</p></article>
+        <article class="card"><span class="icon">⌕</span><strong>Manual smart search</strong><p>Type a code, number, additive name, alias, or functional class. The app searches code, Turkish and English names, aliases, and additive categories.</p><ul class="feature-list"><li>Exact code match</li><li>Prefix suggestions</li><li>Name and alias lookup</li></ul></article>
+        <article class="card"><span class="icon">⌁</span><strong>Camera and gallery OCR</strong><p>Scan a product label with the camera or choose a photo from the gallery. OCR extracts visible E-codes and also attempts additive-name matching from label text.</p><ul class="feature-list"><li>Camera scan</li><li>Gallery image scan</li><li>Manual review after OCR</li></ul></article>
+        <article class="card"><span class="icon">✓</span><strong>Readable additive cards</strong><p>Results are presented with localized names, purpose, halal status, risk signal bars, health notes, warnings, and a short explanation.</p><ul class="feature-list"><li>Purpose and description</li><li>Risk and halal indicators</li><li>Warnings when available</li></ul></article>
       </div>
     </section>
 
     <section class="site-shell section">
       <div class="section-head">
         <div>
-          <p class="section-kicker">How it works</p>
-          <h2>Read a label in three steps.</h2>
+          <p class="section-kicker">Recognition pipeline</p>
+          <h2>From messy label text to useful matches.</h2>
         </div>
+        <p class="section-desc">The app is designed for imperfect real-world packaging: spacing, OCR errors, names instead of codes, and grouped additive ranges.</p>
       </div>
+      <div class="pipeline">
+        <article class="card"><span class="icon">1</span><strong>Normalize</strong><p>Manual entries such as 330, E 330 or e160a are normalized into database-friendly codes.</p></article>
+        <article class="card"><span class="icon">2</span><strong>Suggest</strong><p>While typing, the app shows nearby matches from code prefixes, names, aliases and functional classes.</p></article>
+        <article class="card"><span class="icon">3</span><strong>Match OCR</strong><p>OCR text is checked for E-codes, range rows and additive names while generic category words are filtered out.</p></article>
+        <article class="card"><span class="icon">4</span><strong>Sync safely</strong><p>Live server data can refresh the local Room database; offline data is preserved if the server response looks unsafe.</p></article>
+      </div>
+    </section>
+
+    <section class="site-shell section">
       <div class="grid-2">
         <div class="card steps">
-          <div class="step"><p><strong>Scan the label</strong>Use the camera or gallery to capture the ingredients area.</p></div>
-          <div class="step"><p><strong>Review detected codes</strong>OCR-detected E-codes are matched against the additive database.</p></div>
-          <div class="step"><p><strong>Interpret the result</strong>Description, halal status, risk level, and warnings appear in one place.</p></div>
+          <div class="step"><p><strong>Search or scan</strong>Use text search, camera OCR, live scan, or gallery input.</p></div>
+          <div class="step"><p><strong>Review matches</strong>Check code, localized additive name, category, halal status and risk level.</p></div>
+          <div class="step"><p><strong>Use with care</strong>Compare with the package label and qualified guidance before final decisions.</p></div>
         </div>
         <div class="card">
           <p class="section-kicker">Important note</p>
           <h2 style="font-size:2.4rem">It informs; it does not decide.</h2>
-          <p>Food Label Detective is for general information only. It does not replace product labels, manufacturer statements, official regulations, certification bodies, medical advice, or expert review.</p>
+          <p>Food Label Detective is for general information only. It does not replace product labels, manufacturer statements, official regulations, certification bodies, health advice, or expert review.</p>
           <a class="button secondary" href="/app/terms/">Read disclaimer</a>
         </div>
       </div>
