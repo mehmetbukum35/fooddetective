@@ -49,7 +49,7 @@
     <string name="about_section_app_info_title">App information</string>
     <string name="about_section_app_info_body">Version: %1$s\nAuthor: Mehmet Büküm\nYour feedback helps improve the additive database, OCR flow, and app experience.</string>
     <string name="privacy_policy_button">Privacy Policy</string>
-    <string name="privacy_policy_url">https://foodlabeldetective.com.tr/</string>
+    <string name="privacy_policy_url">https://foodlabeldetective.com.tr/app/privacy-policy/</string>
     <string name="feedback_button">Send Feedback</string>
     <string name="feedback_email">mehmetbkm@gmail.com</string>
     <string name="toast_email_copied">No email app was found. The feedback email address was copied.</string>
