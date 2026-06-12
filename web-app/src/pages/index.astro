@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PhoneMockup from '../components/PhoneMockup.astro';
+---
+<BaseLayout
+  lang="tr"
+  active="home"
+  title="Food Label Detective | Gıda Etiketi ve E-Kodu Dedektifi"
+  description="Gıda etiketlerini tarayın, E-kodlarını bulun ve katkı maddeleri hakkında helal durumu, risk seviyesi ve sağlık notlarını hızlıca inceleyin."
+  alternateUrl="/app/en/"
+>
+  <main>
+    <section class="site-shell hero">
+      <div>
+        <span class="eyebrow">Gıda etiketlerini daha okunur hale getiren mobil yardımcı</span>
+        <h1>Etiketteki küçük kodları görünür kıl.</h1>
+        <p class="lede">Food Label Detective, paketli gıdalardaki E-kodlarını ve katkı maddelerini anlamanıza yardımcı olur. Kamerayla etiket tarayın, galeriden fotoğraf seçin veya E330, E120, E160A gibi kodları elle arayın.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#features">Özellikleri keşfet</a>
+          <a class="button secondary" href="/app/privacy-policy/">Gizlilik politikasını oku</a>
+        </div>
+        <p class="hero-note">Fotoğraflar OCR için cihaz üzerinde işlenir; etiket görselleri sunucuya yüklenmez.</p>
+      </div>
+      <PhoneMockup lang="tr" />
+    </section>
+
+    <section id="features" class="site-shell section">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Özellikler</p>
+          <h2>Arama, tarama ve anlaşılır sonuçlar.</h2>
+        </div>
+        <p class="section-desc">Uygulama, katkı maddesi veritabanını cihazda saklar ve uygun olduğunda canlı sunucu verisiyle eşitler. Böylece temel arama akışı internet olmadığında da devam eder.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card"><span class="icon">E</span><strong>E-kodu arama</strong><p>E330, E120, E621 gibi kodları veya katkı maddesi adlarını arayarak kısa açıklama, kullanım amacı ve risk bilgisini görüntüleyin.</p></article>
+        <article class="card"><span class="icon">⌁</span><strong>Kamera ve galeri OCR</strong><p>Ürün etiketini kamera ile tarayın ya da galeriden fotoğraf seçin. OCR sonucu mükemmel olmayabilir; uygulama elle kontrolü de destekler.</p></article>
+        <article class="card"><span class="icon">✓</span><strong>Helal ve risk notları</strong><p>Katkı maddeleri için helal, şüpheli veya haram işaretleri; düşük, orta veya yüksek risk seviyeleri ve sağlık uyarıları gösterilir.</p></article>
+      </div>
+    </section>
+
+    <section class="site-shell section">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Nasıl çalışır?</p>
+          <h2>Üç adımda etiket okuma.</h2>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card steps">
+          <div class="step"><p><strong>Etiketi okutun</strong>Kamera veya galeri ile içindekiler bölümünü seçin.</p></div>
+          <div class="step"><p><strong>Kodları inceleyin</strong>OCR ile bulunan E-kodları veritabanındaki kayıtlarla eşleştirilir.</p></div>
+          <div class="step"><p><strong>Sonucu yorumlayın</strong>Açıklama, helal durumu, risk seviyesi ve uyarılar tek ekranda sunulur.</p></div>
+        </div>
+        <div class="card">
+          <p class="section-kicker">Önemli not</p>
+          <h2 style="font-size:2.4rem">Bilgi verir, nihai karar vermez.</h2>
+          <p>Food Label Detective genel bilgilendirme amaçlıdır. Ürün etiketi, üretici beyanı, resmî mevzuat, sertifikasyon kuruluşu, hekim görüşü veya uzman değerlendirmesi yerine geçmez.</p>
+          <a class="button secondary" href="/app/terms/">Yasal uyarıyı oku</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
