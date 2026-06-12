@@ -1,0 +1,75 @@
+---
+import '../styles/global.css';
+
+const {
+  title = 'Food Label Detective',
+  description = 'Scan food labels, detect E-codes, and review additive information such as halal status, risk level, and health notes.',
+  lang = 'tr',
+  active = 'home',
+  alternateUrl = '/app/en/'
+} = Astro.props;
+
+const nav = lang === 'tr'
+  ? {
+      home: 'Ana Sayfa',
+      privacy: 'Gizlilik',
+      support: 'Destek',
+      terms: 'Uyarı',
+      language: 'English',
+      footer: 'Food Label Detective; gıda etiketlerini daha anlaşılır kılmak için hazırlanmış bağımsız bir bilgilendirme aracıdır.'
+    }
+  : {
+      home: 'Home',
+      privacy: 'Privacy',
+      support: 'Support',
+      terms: 'Disclaimer',
+      language: 'Türkçe',
+      footer: 'Food Label Detective is an independent information tool built to make food labels easier to understand.'
+    };
+
+const prefix = lang === 'tr' ? '/app' : '/app/en';
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#174432" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={`https://foodlabeldetective.com.tr${Astro.url.pathname}`} />
+    <link rel="canonical" href={`https://foodlabeldetective.com.tr${Astro.url.pathname}`} />
+    <link rel="alternate" hreflang={lang === 'tr' ? 'en' : 'tr'} href={`https://foodlabeldetective.com.tr${alternateUrl}`} />
+    <link rel="icon" href="/favicon.ico" />
+  </head>
+  <body>
+    <div class="site-shell">
+      <nav class="nav" aria-label="Main navigation">
+        <a class="brand" href={lang === 'tr' ? '/app/' : '/app/en/'} aria-label="Food Label Detective home">
+          <span class="brand-mark">FD</span>
+          <span>Food Label Detective</span>
+        </a>
+        <div class="nav-links">
+          <a class={active === 'home' ? 'active' : ''} href={`${prefix}/`}>{nav.home}</a>
+          <a class={active === 'privacy' ? 'active' : ''} href={`${prefix}/privacy-policy/`}>{nav.privacy}</a>
+          <a class={active === 'support' ? 'active' : ''} href={`${prefix}/support/`}>{nav.support}</a>
+          <a class={active === 'terms' ? 'active' : ''} href={`${prefix}/terms/`}>{nav.terms}</a>
+          <a class="language-pill" href={alternateUrl}>{nav.language}</a>
+        </div>
+      </nav>
+    </div>
+    <slot />
+    <footer class="footer">
+      <div class="site-shell footer-inner">
+        <span>{nav.footer}</span>
+        <span>
+          <a href={`${prefix}/privacy-policy/`}>{nav.privacy}</a> ·
+          <a href={`${prefix}/support/`}>{nav.support}</a>
+        </span>
+      </div>
+    </footer>
+  </body>
+</html>
