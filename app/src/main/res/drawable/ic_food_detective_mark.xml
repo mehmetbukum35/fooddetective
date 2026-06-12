@@ -4,79 +4,26 @@
     android:viewportWidth="108"
     android:viewportHeight="108">
 
-    <!-- Deep green badge -->
+    <!-- Minimal E-code search mark: magnifier + E -->
     <path
-        android:fillColor="#123C35"
-        android:pathData="M54,54m-43,0a43,43 0,1 0,86 0a43,43 0,1 0,-86 0" />
-
-    <!-- Warm outer glow -->
-    <path
-        android:fillColor="#F5EBD6"
-        android:fillAlpha="0.18"
-        android:pathData="M54,54m-36,0a36,36 0,1 0,72 0a36,36 0,1 0,-72 0" />
-
-    <!-- Product label card -->
-    <path
-        android:fillColor="#FFF8E9"
-        android:pathData="M27,24h43c5,0 9,4 9,9v44c0,5 -4,9 -9,9H27c-5,0 -9,-4 -9,-9V33c0,-5 4,-9 9,-9z" />
-
-    <!-- Folded label corner -->
-    <path
-        android:fillColor="#E9D7B6"
-        android:pathData="M67,24l12,12H69c-1,0 -2,-1 -2,-2V24z" />
-
-    <!-- Label header strip -->
-    <path
-        android:fillColor="#D45F43"
-        android:pathData="M27,34h33v7H27z" />
-
-    <!-- Food/additive label lines -->
-    <path
-        android:strokeColor="#1F5B4F"
-        android:strokeWidth="2.4"
-        android:strokeLineCap="round"
         android:fillColor="#00000000"
-        android:pathData="M28,50h24M28,58h18M28,66h25M28,74h14" />
-
-    <!-- Barcode clue -->
-    <path
-        android:strokeColor="#123C35"
-        android:strokeWidth="2"
-        android:strokeLineCap="square"
-        android:fillColor="#00000000"
-        android:pathData="M57,50v18M62,50v12M67,50v18M72,50v10M77,50v18" />
-
-    <!-- Magnifying glass lens -->
-    <path
-        android:strokeColor="#123C35"
+        android:strokeColor="#FFFFFF"
         android:strokeWidth="6"
         android:strokeLineCap="round"
-        android:fillColor="#00000000"
-        android:pathData="M59,61m-18,0a18,18 0,1 0,36 0a18,18 0,1 0,-36 0" />
+        android:pathData="M47,47m-22,0a22,22 0,1 0,44 0a22,22 0,1 0,-44 0" />
 
-    <!-- Lens shine -->
     <path
+        android:fillColor="#00000000"
         android:strokeColor="#FFFFFF"
-        android:strokeWidth="2.4"
-        android:strokeLineCap="round"
-        android:fillColor="#00000000"
-        android:pathData="M48,52c4,-4 10,-6 16,-4" />
-
-    <!-- Magnifying glass handle -->
-    <path
-        android:strokeColor="#C9973A"
         android:strokeWidth="7"
         android:strokeLineCap="round"
+        android:pathData="M63,63L81,81" />
+
+    <path
         android:fillColor="#00000000"
-        android:pathData="M72,74L88,90" />
-
-    <!-- Handle cap -->
-    <path
-        android:fillColor="#E2B75E"
-        android:pathData="M89,91m-5,0a5,5 0,1 0,10 0a5,5 0,1 0,-10 0" />
-
-    <!-- Small E-number/additive hint -->
-    <path
-        android:fillColor="#123C35"
-        android:pathData="M45,74h14v4h-9v3h8v4h-8v3h9v4H45z" />
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="5"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M39,38L39,57M39,38L56,38M39,47.5L53,47.5M39,57L56,57" />
 </vector>
