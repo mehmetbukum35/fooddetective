@@ -5,14 +5,14 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowActionBar">false</item>
         <item name="android:windowBackground">@drawable/splash_background</item>
-        <item name="android:colorAccent">#1F5B4F</item>
+        <item name="android:colorAccent">#1F7A4D</item>
         <item name="android:navigationBarColor">#FFFBF1</item>
         <item name="android:statusBarColor">#FFFBF1</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.EDetective.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenBackground">#F5EBD6</item>
+        <item name="windowSplashScreenBackground">#1F7A4D</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_food_detective_mark</item>
         <item name="postSplashScreenTheme">@style/Theme.EDetective</item>
     </style>
