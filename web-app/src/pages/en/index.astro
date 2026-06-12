@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PhoneMockup from '../../components/PhoneMockup.astro';
+---
+<BaseLayout
+  lang="en"
+  active="home"
+  title="Food Label Detective | Food Label and E-code Scanner"
+  description="Scan food labels, detect E-codes, and review additive information such as halal status, risk level, and health notes."
+  alternateUrl="/app/"
+>
+  <main>
+    <section class="site-shell hero">
+      <div>
+        <span class="eyebrow">A mobile companion for clearer food labels</span>
+        <h1>Make tiny label codes visible.</h1>
+        <p class="lede">Food Label Detective helps you understand E-codes and food additives on packaged products. Scan a label with the camera, choose a photo from the gallery, or manually search codes such as E330, E120, and E160A.</p>
+        <div class="hero-actions">
+          <a class="button primary" href="#features">Explore features</a>
+          <a class="button secondary" href="/app/en/privacy-policy/">Read privacy policy</a>
+        </div>
+        <p class="hero-note">Label photos are processed on your device for OCR; they are not uploaded to a server.</p>
+      </div>
+      <PhoneMockup lang="en" />
+    </section>
+
+    <section id="features" class="site-shell section">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">Features</p>
+          <h2>Search, scan, and understand results.</h2>
+        </div>
+        <p class="section-desc">The app stores an additive database on the device and synchronizes with live server data when available. Basic search can continue even without an internet connection.</p>
+      </div>
+      <div class="grid-3">
+        <article class="card"><span class="icon">E</span><strong>E-code search</strong><p>Search codes such as E330, E120, or E621, or type an additive name to see a short description, purpose, and risk signal.</p></article>
+        <article class="card"><span class="icon">⌁</span><strong>Camera and gallery OCR</strong><p>Scan a product label with the camera or choose a photo from the gallery. OCR is not perfect, so manual checking is always supported.</p></article>
+        <article class="card"><span class="icon">✓</span><strong>Halal and risk notes</strong><p>Additives may show halal, doubtful, or not-halal status, plus low, medium, or high risk levels and health warnings when available.</p></article>
+      </div>
+    </section>
+
+    <section class="site-shell section">
+      <div class="section-head">
+        <div>
+          <p class="section-kicker">How it works</p>
+          <h2>Read a label in three steps.</h2>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card steps">
+          <div class="step"><p><strong>Scan the label</strong>Use the camera or gallery to capture the ingredients area.</p></div>
+          <div class="step"><p><strong>Review detected codes</strong>OCR-detected E-codes are matched against the additive database.</p></div>
+          <div class="step"><p><strong>Interpret the result</strong>Description, halal status, risk level, and warnings appear in one place.</p></div>
+        </div>
+        <div class="card">
+          <p class="section-kicker">Important note</p>
+          <h2 style="font-size:2.4rem">It informs; it does not decide.</h2>
+          <p>Food Label Detective is for general information only. It does not replace product labels, manufacturer statements, official regulations, certification bodies, medical advice, or expert review.</p>
+          <a class="button secondary" href="/app/en/terms/">Read disclaimer</a>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>
