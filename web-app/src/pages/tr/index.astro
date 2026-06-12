@@ -5,21 +5,27 @@ import PhoneMockup from '../../components/PhoneMockup.astro';
 <BaseLayout
   lang="tr"
   active="home"
-  title="Food Label Detective | Gıda Etiketi ve E-Kodu Dedektifi"
-  description="Gıda etiketlerini tarayın, E-kodlarını bulun ve katkı maddeleri hakkında helal durumu, risk seviyesi ve sağlık notlarını hızlıca inceleyin."
+  title="Food Label Detective | Katkı Maddesi, İsim ve E-Kodu Dedektifi"
+  description="Gıda etiketlerini tarayın; katkı adlarını ve E-kodlarını bulun; kod, isim, takma ad veya işlev sınıfıyla arama yapın; helal durumu, risk seviyesi ve uyarıları inceleyin."
   alternateUrl="/app/"
 >
   <main>
     <section class="site-shell hero">
       <div>
-        <span class="eyebrow">Gıda etiketlerini daha okunur hale getiren mobil yardımcı</span>
-        <h1>Etiketteki küçük kodları görünür kıl.</h1>
-        <p class="lede">Food Label Detective, paketli gıdalardaki E-kodlarını ve katkı maddelerini anlamanıza yardımcı olur. Kamerayla etiket tarayın, galeriden fotoğraf seçin veya E330, E120, E160A gibi kodları elle arayın.</p>
+        <span class="eyebrow">Gıda katkı etiketleri için daha akıllı mobil yardımcı</span>
+        <h1>Sadece kodu değil, etiketi ara.</h1>
+        <p class="lede">Food Label Detective yalnızca E-kodu aramaz. Kod, katkı adı, takma ad veya işlev sınıfıyla arama yapabilir; kamera ya da galeriden etiket tarayabilir; helal durumu, risk seviyesi, uyarı ve çevrimdışı kullanım desteğiyle anlaşılır sonuçlar sunar.</p>
         <div class="hero-actions">
-          <a class="button primary" href="#features">Özellikleri keşfet</a>
+          <a class="button primary" href="#features">Arama motorunu keşfet</a>
           <a class="button secondary" href="/app/tr/privacy-policy/">Gizlilik politikasını oku</a>
         </div>
-        <p class="hero-note">Fotoğraflar OCR için cihaz üzerinde işlenir; etiket görselleri sunucuya yüklenmez.</p>
+        <p class="hero-note">OCR cihaz üzerinde çalışır. Etiket fotoğrafları tanıma için kullanılır ve uygulama tarafından sunucuya yüklenmez.</p>
+        <div class="metric-strip">
+          <div class="metric"><b>Kod</b><span>E330, E120, E160A</span></div>
+          <div class="metric"><b>İsim</b><span>karmin, sitrik asit</span></div>
+          <div class="metric"><b>Takma ad</b><span>alternatif katkı adları</span></div>
+          <div class="metric"><b>Sınıf</b><span>renklendirici, koruyucu</span></div>
+        </div>
       </div>
       <PhoneMockup lang="tr" />
     </section>
@@ -27,35 +33,45 @@ import PhoneMockup from '../../components/PhoneMockup.astro';
     <section id="features" class="site-shell section">
       <div class="section-head">
         <div>
-          <p class="section-kicker">Özellikler</p>
-          <h2>Arama, tarama ve anlaşılır sonuçlar.</h2>
+          <p class="section-kicker">Uygulama aslında ne arıyor?</p>
+          <h2>Kod, isim, takma ad ve kategori eşleşmesi.</h2>
         </div>
-        <p class="section-desc">Uygulama, katkı maddesi veritabanını cihazda saklar ve uygun olduğunda canlı sunucu verisiyle eşitler. Böylece temel arama akışı internet olmadığında da devam eder.</p>
+        <p class="section-desc">Arama katmanı; tam kod eşleşmesini, kod başlangıcı önerilerini, kelime eşleşmesini, Türkçe ve İngilizce katkı adlarını, takma ad alanlarını ve işlev sınıflarını birlikte kullanır. E1400-E1450 gibi aralık kodları da desteklenir.</p>
       </div>
       <div class="grid-3">
-        <article class="card"><span class="icon">E</span><strong>E-kodu arama</strong><p>E330, E120, E621 gibi kodları veya katkı maddesi adlarını arayarak kısa açıklama, kullanım amacı ve risk bilgisini görüntüleyin.</p></article>
-        <article class="card"><span class="icon">⌁</span><strong>Kamera ve galeri OCR</strong><p>Ürün etiketini kamera ile tarayın ya da galeriden fotoğraf seçin. OCR sonucu mükemmel olmayabilir; uygulama elle kontrolü de destekler.</p></article>
-        <article class="card"><span class="icon">✓</span><strong>Helal ve risk notları</strong><p>Katkı maddeleri için helal, şüpheli veya haram işaretleri; düşük, orta veya yüksek risk seviyeleri ve sağlık uyarıları gösterilir.</p></article>
+        <article class="card"><span class="icon">⌕</span><strong>Akıllı manuel arama</strong><p>Kod, numara, katkı adı, takma ad veya işlev sınıfı yazabilirsiniz. Uygulama kod, Türkçe/İngilizce ad, alias ve kategori alanlarında arama yapar.</p><ul class="feature-list"><li>Tam kod eşleşmesi</li><li>Anlık öneriler</li><li>İsim ve takma ad araması</li></ul></article>
+        <article class="card"><span class="icon">⌁</span><strong>Kamera ve galeri OCR</strong><p>Ürün etiketini kamerayla tarayın veya galeriden fotoğraf seçin. OCR görünen E-kodlarını çıkarır ve etiket metninde katkı adı eşleşmesi de arar.</p><ul class="feature-list"><li>Kamera tarama</li><li>Galeri görseli</li><li>OCR sonrası manuel kontrol</li></ul></article>
+        <article class="card"><span class="icon">✓</span><strong>Anlaşılır sonuç kartları</strong><p>Sonuçlarda yerelleştirilmiş ad, kullanım amacı, helal durumu, risk çubukları, uyarı ve kısa açıklama gösterilir.</p><ul class="feature-list"><li>Amaç ve açıklama</li><li>Risk ve helal göstergeleri</li><li>Varsa uyarılar</li></ul></article>
       </div>
     </section>
 
     <section class="site-shell section">
       <div class="section-head">
         <div>
-          <p class="section-kicker">Nasıl çalışır?</p>
-          <h2>Üç adımda etiket okuma.</h2>
+          <p class="section-kicker">Tanıma hattı</p>
+          <h2>Dağınık etiket metninden anlamlı eşleşmeye.</h2>
         </div>
+        <p class="section-desc">Uygulama gerçek ambalaj koşullarını düşünür: boşluklar, OCR hataları, kod yerine yazılmış katkı adları ve gruplu katkı aralıkları.</p>
       </div>
+      <div class="pipeline">
+        <article class="card"><span class="icon">1</span><strong>Normalize eder</strong><p>330, E 330 veya e160a gibi manuel girişler veritabanına uygun koda dönüştürülür.</p></article>
+        <article class="card"><span class="icon">2</span><strong>Öneri üretir</strong><p>Yazarken kod başlangıcı, isim, takma ad ve işlev sınıfı alanlarından yakın sonuçlar gösterilir.</p></article>
+        <article class="card"><span class="icon">3</span><strong>OCR eşleştirir</strong><p>OCR metni E-kodları, aralık satırları ve katkı adları açısından kontrol edilir; genel kategori kelimeleri filtrelenir.</p></article>
+        <article class="card"><span class="icon">4</span><strong>Güvenli eşitler</strong><p>Canlı sunucu verisi yerel Room veritabanını yenileyebilir; sorunlu yanıtta yerel veri korunur.</p></article>
+      </div>
+    </section>
+
+    <section class="site-shell section">
       <div class="grid-2">
         <div class="card steps">
-          <div class="step"><p><strong>Etiketi okutun</strong>Kamera veya galeri ile içindekiler bölümünü seçin.</p></div>
-          <div class="step"><p><strong>Kodları inceleyin</strong>OCR ile bulunan E-kodları veritabanındaki kayıtlarla eşleştirilir.</p></div>
-          <div class="step"><p><strong>Sonucu yorumlayın</strong>Açıklama, helal durumu, risk seviyesi ve uyarılar tek ekranda sunulur.</p></div>
+          <div class="step"><p><strong>Ara veya tara</strong>Metin araması, kamera OCR, canlı tarama veya galeri girişi kullanın.</p></div>
+          <div class="step"><p><strong>Eşleşmeleri incele</strong>Kod, yerelleştirilmiş katkı adı, kategori, helal durumu ve risk seviyesini kontrol edin.</p></div>
+          <div class="step"><p><strong>Dikkatle kullan</strong>Nihai karar öncesinde ürün etiketi ve yetkin kaynaklarla karşılaştırın.</p></div>
         </div>
         <div class="card">
           <p class="section-kicker">Önemli not</p>
           <h2 style="font-size:2.4rem">Bilgi verir, nihai karar vermez.</h2>
-          <p>Food Label Detective genel bilgilendirme amaçlıdır. Ürün etiketi, üretici beyanı, resmî mevzuat, sertifikasyon kuruluşu, hekim görüşü veya uzman değerlendirmesi yerine geçmez.</p>
+          <p>Food Label Detective genel bilgilendirme amaçlıdır. Ürün etiketi, üretici beyanı, resmî mevzuat, sertifikasyon kuruluşu veya uzman değerlendirmesi yerine geçmez.</p>
           <a class="button secondary" href="/app/tr/terms/">Yasal uyarıyı oku</a>
         </div>
       </div>
