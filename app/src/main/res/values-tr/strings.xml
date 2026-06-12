@@ -42,7 +42,7 @@
     <string name="about_section_app_info_title">Uygulama bilgisi</string>
     <string name="about_section_app_info_body">Sürüm: %1$s\nYazar: Mehmet Büküm\nGeri bildiriminiz katkı maddesi veritabanını, OCR akışını ve uygulama deneyimini geliştirmeye yardımcı olur.</string>
     <string name="privacy_policy_button">Gizlilik Politikası</string>
-    <string name="privacy_policy_url">https://foodlabeldetective.com.tr/</string>
+    <string name="privacy_policy_url">https://foodlabeldetective.com.tr/app/privacy-policy/</string>
     <string name="feedback_button">Geri Bildirim Gönder</string>
     <string name="feedback_email">mehmetbkm@gmail.com</string>
     <string name="toast_email_copied">E-posta uygulaması bulunamadı. Geri bildirim e-posta adresi panoya kopyalandı.</string>
