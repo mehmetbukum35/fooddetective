@@ -2,56 +2,78 @@
 const { lang = 'en' } = Astro.props;
 const t = lang === 'tr'
   ? {
-      chip: 'Canlı Etiket Okuma',
-      search: 'karmin · E120 · renklendirici',
-      title: 'Karmin',
-      desc: 'Kod, ad, takma ad veya işlev sınıfı ile bulunan katkı maddesi sonucu.',
-      halal: 'Haram',
-      risk: 'Orta Risk',
-      ocr: 'Ad + kod eşleşmesi',
-      smart: 'Akıllı eşleştirme',
-      smartText: 'OCR yalnızca E-kodu değil; katkı adlarını ve takma adları da yakalamaya çalışır.'
+      top: 'OCR · LATIN · CİHAZ İÇİ',
+      live: 'TARANIYOR',
+      lead: 'İçindekiler',
+      textA: 'buğday unu, şeker, bitkisel yağ, glikoz-fruktoz şurubu, kabartıcı, emülgatör, asitlik düzenleyici',
+      textB: 'renklendirici',
+      textC: 'lezzet artırıcı',
+      textD: 'koruyucu, aroma vericiler. Fındık ve süt içerebilir.',
+      read: 'çözülen kanıt',
+      status: 'eşleşme bulundu',
+      e330: 'Sitrik Asit',
+      e120: 'Karmin',
+      e621: 'MSG',
+      acid: 'Asitlik düzenleyici',
+      color: 'Renklendirici',
+      flavor: 'Lezzet artırıcı',
+      halal: 'Helal',
+      doubtful: 'Şüpheli'
     }
   : {
-      chip: 'Live Label Scan',
-      search: 'carmine · E120 · colour',
-      title: 'Carmine',
-      desc: 'A result found by code, additive name, alias, or functional class.',
-      halal: 'Not halal',
-      risk: 'Medium risk',
-      ocr: 'Name + code match',
-      smart: 'Smart matching',
-      smartText: 'OCR does not only look for E-codes; it also tries to match additive names and aliases.'
+      top: 'OCR · LATIN · ON DEVICE',
+      live: 'SCANNING',
+      lead: 'Ingredients',
+      textA: 'wheat flour, sugar, vegetable oil, glucose-fructose syrup, raising agent, emulsifier, acidity regulator',
+      textB: 'colour additive',
+      textC: 'flavour enhancer',
+      textD: 'preservative, flavourings. May contain hazelnut and milk.',
+      read: 'decoded evidence',
+      status: 'match found',
+      e330: 'Citric Acid',
+      e120: 'Carmine',
+      e621: 'MSG',
+      acid: 'Acidity regulator',
+      color: 'Colour additive',
+      flavor: 'Flavour enhancer',
+      halal: 'Halal',
+      doubtful: 'Doubtful'
     };
 ---
 <div class="phone-stage" aria-hidden="true">
   <div class="orbit"></div>
-  <span class="float-token one">name fields</span>
-  <span class="float-token two">aliases</span>
-  <span class="float-token three">range codes</span>
-  <div class="phone">
-    <div class="phone-screen">
-      <span class="scan-chip">⌁ {t.chip}</span>
-      <div class="search-box">{t.search}</div>
-      <div class="suggestion-stack">
-        <div class="suggestion-mini"><b>E120</b><span>{lang === 'tr' ? 'Karmin' : 'Carmine'}</span></div>
-        <div class="suggestion-mini"><b>E160A</b><span>{lang === 'tr' ? 'Beta karoten' : 'Beta carotene'}</span></div>
-        <div class="suggestion-mini"><b>E330</b><span>{lang === 'tr' ? 'Sitrik asit' : 'Citric acid'}</span></div>
+  <section class="detective-scanner">
+    <div class="scanner-top">
+      <span>{t.top}</span>
+      <span class="live-dot">{t.live}</span>
+    </div>
+    <div class="ocr-frame">
+      <p class="ingredients">
+        <span class="lead">{t.lead}</span>
+        {t.textA} (<span class="tok">E330</span>), {t.textB} (<span class="tok">E120</span>), {t.textC} (<span class="tok">E621</span>), {t.textD}
+      </p>
+      <div class="scanline"></div>
+    </div>
+    <div class="readout">
+      <span>{t.read} → <b>E330 · E120 · E621</b></span>
+      <span>{t.status}</span>
+    </div>
+    <div class="evidence">
+      <div class="ev">
+        <div class="code">E330</div>
+        <div class="nm">{t.e330}<small>{t.acid}</small></div>
+        <div><span class="pill ok">{t.halal}</span><span class="risk-bars"><i></i><i></i><i></i></span></div>
       </div>
-      <div class="result-card">
-        <h3>{t.title}</h3>
-        <p>{t.desc}</p>
-        <div class="bars"><span></span><span></span><span></span></div>
-        <div class="tag-row">
-          <span class="tag red">{t.halal}</span>
-          <span class="tag">{t.risk}</span>
-          <span class="tag green">{t.ocr}</span>
-        </div>
+      <div class="ev">
+        <div class="code">E120</div>
+        <div class="nm">{t.e120}<small>{t.color}</small></div>
+        <div><span class="pill warn">{t.doubtful}</span><span class="risk-bars"><i></i><i></i><i></i></span></div>
       </div>
-      <div class="result-card">
-        <h3>{t.smart}</h3>
-        <p>{t.smartText}</p>
+      <div class="ev">
+        <div class="code">E621</div>
+        <div class="nm">{t.e621}<small>{t.flavor}</small></div>
+        <div><span class="pill ok">{t.halal}</span><span class="risk-bars"><i></i><i></i><i></i></span></div>
       </div>
     </div>
-  </div>
+  </section>
 </div>
