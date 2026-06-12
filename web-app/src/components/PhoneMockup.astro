@@ -1,31 +1,43 @@
 ---
-const { lang = 'tr' } = Astro.props;
+const { lang = 'en' } = Astro.props;
 const t = lang === 'tr'
   ? {
       chip: 'Canlı Etiket Okuma',
-      search: 'E120 · Karmin',
+      search: 'karmin · E120 · renklendirici',
       title: 'Karmin',
-      desc: 'Böcek kaynaklı kırmızı renklendirici. Helal hassasiyeti olan tüketiciler için sakıncalıdır.',
+      desc: 'Kod, ad, takma ad veya işlev sınıfı ile bulunan katkı maddesi sonucu.',
       halal: 'Haram',
       risk: 'Orta Risk',
-      ocr: 'OCR cihazda çalışır'
+      ocr: 'Ad + kod eşleşmesi',
+      smart: 'Akıllı eşleştirme',
+      smartText: 'OCR yalnızca E-kodu değil; katkı adlarını ve takma adları da yakalamaya çalışır.'
     }
   : {
       chip: 'Live Label Scan',
-      search: 'E120 · Carmine',
+      search: 'carmine · E120 · colour',
       title: 'Carmine',
-      desc: 'An insect-derived red colour additive. Unsuitable for consumers with halal concerns.',
+      desc: 'A result found by code, additive name, alias, or functional class.',
       halal: 'Not halal',
       risk: 'Medium risk',
-      ocr: 'On-device OCR'
+      ocr: 'Name + code match',
+      smart: 'Smart matching',
+      smartText: 'OCR does not only look for E-codes; it also tries to match additive names and aliases.'
     };
 ---
 <div class="phone-stage" aria-hidden="true">
   <div class="orbit"></div>
+  <span class="float-token one">name fields</span>
+  <span class="float-token two">aliases</span>
+  <span class="float-token three">range codes</span>
   <div class="phone">
     <div class="phone-screen">
       <span class="scan-chip">⌁ {t.chip}</span>
       <div class="search-box">{t.search}</div>
+      <div class="suggestion-stack">
+        <div class="suggestion-mini"><b>E120</b><span>{lang === 'tr' ? 'Karmin' : 'Carmine'}</span></div>
+        <div class="suggestion-mini"><b>E160A</b><span>{lang === 'tr' ? 'Beta karoten' : 'Beta carotene'}</span></div>
+        <div class="suggestion-mini"><b>E330</b><span>{lang === 'tr' ? 'Sitrik asit' : 'Citric acid'}</span></div>
+      </div>
       <div class="result-card">
         <h3>{t.title}</h3>
         <p>{t.desc}</p>
@@ -37,12 +49,8 @@ const t = lang === 'tr'
         </div>
       </div>
       <div class="result-card">
-        <h3>E330</h3>
-        <p>{lang === 'tr' ? 'Sitrik asit gibi yaygın katkıları kod veya ad ile hızlıca arayın.' : 'Quickly search common additives such as citric acid by code or name.'}</p>
-        <div class="tag-row">
-          <span class="tag green">{lang === 'tr' ? 'Arama' : 'Search'}</span>
-          <span class="tag green">{lang === 'tr' ? 'Çevrimdışı veri' : 'Offline data'}</span>
-        </div>
+        <h3>{t.smart}</h3>
+        <p>{t.smartText}</p>
       </div>
     </div>
   </div>
