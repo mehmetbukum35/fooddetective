@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="en"
+  active="privacy"
+  title="Privacy Policy | Food Label Detective"
+  description="Privacy policy for Food Label Detective, including camera, gallery, OCR, internet, and database synchronization use."
+  alternateUrl="/app/privacy-policy/"
+>
+  <main class="site-shell policy-hero policy-content">
+    <span class="eyebrow">Privacy Policy</span>
+    <h1>We read the label text, not your private life.</h1>
+    <p class="lede">This policy explains what permissions Food Label Detective uses, what data is processed, and how the app protects user privacy.</p>
+    <p class="notice"><strong>Last updated:</strong> June 12, 2026. The app is provided for general information only and does not make medical, legal, or certification decisions.</p>
+
+    <h2>1. Information processed</h2>
+    <p>Food Label Detective helps detect E-codes and additive names on food labels. Label images captured with the camera or selected from the gallery are used only for on-device OCR processing.</p>
+
+    <h2>2. Camera and gallery use</h2>
+    <p>Camera permission is used to capture food labels and read text through OCR. Gallery images are processed for the same purpose. Label images are not uploaded to a remote server by the app.</p>
+
+    <h2>3. Internet access</h2>
+    <p>Internet access is used to update the additive database, reach the live data source, and check connection status. The app can continue basic searches with the local database stored on the device.</p>
+
+    <h2>4. Additive data</h2>
+    <p>The app may display additive code, name, purpose, halal status, health note, risk level, description, warning, and alias fields. This information is for general guidance only.</p>
+
+    <h2>5. Sharing and third parties</h2>
+    <p>The app does not upload label photos or OCR images to a server for sharing with third parties. It may communicate with its own API service to synchronize additive database records.</p>
+
+    <h2>6. Children’s privacy</h2>
+    <p>The app is not designed to collect personal data from children. Additive information is presented as general educational guidance.</p>
+
+    <h2>7. User responsibility</h2>
+    <p>OCR can make mistakes. Before making a final decision, users should check the product package, manufacturer statements, official regulations, certification bodies, and qualified expert guidance.</p>
+
+    <h2>8. Contact</h2>
+    <p>For privacy questions or correction requests, contact <a href="mailto:mehmetbkm@gmail.com">mehmetbkm@gmail.com</a>.</p>
+  </main>
+</BaseLayout>
