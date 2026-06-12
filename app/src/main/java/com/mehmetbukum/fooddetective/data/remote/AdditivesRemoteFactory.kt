@@ -8,7 +8,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 object AdditivesRemoteFactory {
-    private const val BASE_URL = "https://ozgurkitap.com/"
+    private const val BASE_URL = "https://foodlabeldetective.com.tr/"
     private const val CONNECT_TIMEOUT_SECONDS = 10L
     private const val READ_TIMEOUT_SECONDS = 20L
     private const val WRITE_TIMEOUT_SECONDS = 20L
