@@ -47,7 +47,7 @@
     <string name="about_section_privacy_title">Privacy and photo use</string>
     <string name="about_section_privacy_body">Label images captured with the camera or selected from the gallery are used only for on-device OCR processing; the app does not upload these images to a server. Internet access is used only to update the additive database and check connection status.</string>
     <string name="about_section_app_info_title">App information</string>
-    <string name="about_section_app_info_body">Version: %1$s\nAuthor: Mehmet Büküm\nYour feedback helps improve the additive database, OCR flow, and app experience.</string>
+    <string name="about_section_app_info_body">Version: %1$s\nCoding: Mehmet Büküm\nDesign: Nurefşan Eretkun\nYour feedback helps improve the additive database, OCR flow, and app experience.</string>
     <string name="privacy_policy_button">Privacy Policy</string>
     <string name="privacy_policy_url">https://foodlabeldetective.com.tr/app/privacy-policy/</string>
     <string name="feedback_button">Send Feedback</string>
