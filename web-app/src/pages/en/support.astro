@@ -1,0 +1,29 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  lang="en"
+  active="support"
+  title="Support | Food Label Detective"
+  description="Feedback, bug reports, and additive data correction suggestions for Food Label Detective."
+  alternateUrl="/app/support/"
+>
+  <main class="site-shell policy-hero policy-content">
+    <span class="eyebrow">Support</span>
+    <h1>Let’s make one more label easier to understand.</h1>
+    <p class="lede">You can send bug reports, data correction suggestions, translation notes, or feedback about the app experience.</p>
+
+    <div class="grid-2">
+      <article class="card"><span class="icon">✉</span><strong>Email</strong><p><a href="mailto:mehmetbkm@gmail.com">mehmetbkm@gmail.com</a></p></article>
+      <article class="card"><span class="icon">↻</span><strong>Data corrections</strong><p>You may suggest corrections for an additive description, halal status, risk level, or warning note.</p></article>
+    </div>
+
+    <h2>When sending feedback</h2>
+    <ul>
+      <li>Include the relevant E-code or additive name.</li>
+      <li>If it relates to a product label, quote the wording from the package.</li>
+      <li>If you report an OCR issue, briefly mention lighting, angle, or the unreadable area.</li>
+      <li>Do not share personal health information; the app does not provide medical assessment.</li>
+    </ul>
+  </main>
+</BaseLayout>
