@@ -6,12 +6,12 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 internal interface AdditivesRetrofitService {
-    @GET("food/api/additives")
+    @GET("api/additives")
     suspend fun getAllAdditives(): List<Additive>
 
-    @GET("food/api/additives/version")
+    @GET("api/additives/version")
     suspend fun getVersion(): AdditivesVersionResponse
 
-    @GET("food/api/additives/since")
+    @GET("api/additives/since")
     suspend fun getAdditivesSince(@Query("date") date: String): List<Additive>
 }
