@@ -40,7 +40,7 @@
     <string name="about_section_privacy_title">Gizlilik ve fotoğraf kullanımı</string>
     <string name="about_section_privacy_body">Kamera ile çekilen veya galeriden seçilen etiket görselleri yalnızca cihaz üzerinde OCR işlemi için kullanılır; uygulama bu görselleri sunucuya yüklemez. İnternet bağlantısı yalnızca katkı maddesi veritabanını güncellemek ve bağlantı durumunu kontrol etmek için kullanılır.</string>
     <string name="about_section_app_info_title">Uygulama bilgisi</string>
-    <string name="about_section_app_info_body">Sürüm: %1$s\nYazar: Mehmet Büküm\nGeri bildiriminiz katkı maddesi veritabanını, OCR akışını ve uygulama deneyimini geliştirmeye yardımcı olur.</string>
+    <string name="about_section_app_info_body">Sürüm: %1$s\nKodlama: Mehmet Büküm\nTasarım: Nurefşan Eretkun\nGeri bildiriminiz katkı maddesi veritabanını, OCR akışını ve uygulama deneyimini geliştirmeye yardımcı olur.</string>
     <string name="privacy_policy_button">Gizlilik Politikası</string>
     <string name="privacy_policy_url">https://foodlabeldetective.com.tr/app/privacy-policy/</string>
     <string name="feedback_button">Geri Bildirim Gönder</string>
