@@ -1,8 +1,11 @@
 package com.mehmetbukum.fooddetective.ui.components
 
+import android.content.ActivityNotFoundException
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -166,8 +169,10 @@ private fun ContactAndPrivacySection(
         )
         TextButton(
             onClick = {
-                context.copyTextToClipboard(label = privacyUrl, text = privacyUrl)
-                Toast.makeText(context, privacyCopiedMessage, Toast.LENGTH_LONG).show()
+                context.openUrlOrCopyToClipboard(
+                    url = privacyUrl,
+                    fallbackMessage = privacyCopiedMessage
+                )
             }
         ) {
             Text(privacyUrl)
@@ -179,6 +184,23 @@ private fun Context.readAppVersionName(): String {
     return runCatching {
         packageManager.getPackageInfo(packageName, 0).versionName.orEmpty()
     }.getOrDefault("1.0")
+}
+
+private fun Context.openUrlOrCopyToClipboard(url: String, fallbackMessage: String) {
+    val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url)).apply {
+        addCategory(Intent.CATEGORY_BROWSABLE)
+        addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+    }
+
+    try {
+        startActivity(intent)
+    } catch (_: ActivityNotFoundException) {
+        copyTextToClipboard(label = url, text = url)
+        Toast.makeText(this, fallbackMessage, Toast.LENGTH_LONG).show()
+    } catch (_: SecurityException) {
+        copyTextToClipboard(label = url, text = url)
+        Toast.makeText(this, fallbackMessage, Toast.LENGTH_LONG).show()
+    }
 }
 
 private fun Context.copyTextToClipboard(label: String, text: String) {
